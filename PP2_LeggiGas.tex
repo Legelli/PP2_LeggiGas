@@ -1,0 +1,143 @@
+%==================================================
+%      PREAMBOLO e DICHIARAZIONI INIZIALI
+%==================================================
+\documentclass[10pt,oneside,a4paper]{article}
+
+\usepackage[latin1]{inputenc} 
+\usepackage[italian]{babel}
+\usepackage{siunitx} %Inserisce automaticamente i dati con le unità  di misura correttamente formattate del SI (utilizzo: \SI{0.82}{m^2}, in generale \SI{misura con il punto decimale}{unità  di misura})
+\sisetup{output-decimal-marker = {.}, separate-uncertainty = true, input-uncertainty-signs = \pm, detect-weight=true, detect-family=true} %per usare SI con il punto decimale
+\usepackage{listings} %Per citare codice informatico formattandolo correttamente
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage{geometry}
+\usepackage{epigraph}
+\usepackage{booktabs}	%tabelle migliorate
+\usepackage{tablefootnote}	%note a piè di pagina in tabella
+\usepackage{threeparttable} %tabella con note a piè di tabella
+\usepackage{caption}	%descrizione per figure
+\captionsetup{tableposition=top,figureposition=bottom,font=small} %setup descrizione
+\usepackage{float}
+\usepackage{esvect} %vettori
+\usepackage{longtable} %tabelle lunghe
+\usepackage[dvipsnames]{xcolor}
+\definecolor{sepia}{HTML}{80002A}
+\usepackage[colorlinks=true, citecolor=black, linkcolor=sepia, urlcolor=black]{hyperref}
+\usepackage{mathrsfs}
+%\usepackage[utf8]{inputenc}
+
+\newcommand{\var}{\operatorname{var}}
+\newcommand{\cov}{\operatorname{cov}}
+
+
+\usepackage{listings} %Per inserire codice
+\lstnewenvironment{codice_c}[1][]
+{\lstset{basicstyle=\small\ttfamily, columns=fullflexible,
+keywordstyle=\color{red}\bfseries, commentstyle=\color{blue},
+language=C, basicstyle=\small,
+numbers=left, numberstyle=\tiny,
+stepnumber=2, numbersep=5pt, frame=shadowbox,  showstringspaces=false, #1}}{}
+
+\setcounter{section}{-1}
+
+%==================================================
+%                  PRIMA PAGINA
+%==================================================
+
+\title{\textsc{Studio delle leggi dei Gas}}
+\author{\small{G. Galbato Muscio} \and \small{L. Gravina} \and \small{L. Graziotto}}
+\date{}
+
+\begin{document}
+	\begin{figure}
+		\centering
+		\includegraphics[scale=0.5, trim={2.8cm 8.9cm 0 9cm}, clip]{logo.png}
+	\end{figure}
+	\maketitle
+	\begin{center} 
+		\fbox{{\fontsize{12pt}{8mm}\textsc{Gruppo B}}} \\
+		\vspace{1cm}
+		\begin{tabular}{ccc}
+			Esperienza di laboratorio && Consegna della relazione \\
+			\emph{\small{6 novembre 2017}} &&  \emph{\small{19 novembre 2017}}\\
+			\emph{\small{15 novembre 2017}} &&  \\
+		\end{tabular} 
+		\vspace{0.5cm}
+	\end{center}
+\hrule
+\vspace{0.5cm}
+\begin{abstract}
+Mediante un sistema pistone-cilindro, collegabile ad una camera di espansione, si studiano le dipendenze di volume, pressione e temperatura di un gas (l'aria) dalle altre variabili di stato, al fine di verificare la validità delle Leggi di Boyle, Gay-Lussac e Charles. Si realizza quindi un ciclo termico.
+\end{abstract}
+\newpage
+\tableofcontents %Indice
+\listoftables %Indice delle tabelle
+\listoffigures %Indice dei grafici
+
+\pagebreak
+
+%==================================================
+%         SCOPO E DESCRIZIONE DELL'ESPERIENZA
+%==================================================
+\section{Scopo e descrizione dell'esperienza}
+\label{sec:descrizione}
+
+
+Per l'analisi dati si utilizzerà un notebook in linguaggio \emph{Python}.
+
+
+%==================================================
+%				APPARATO SPERIMENTALE
+%==================================================		
+\section{Apparato Sperimentale}
+\subsection{Strumenti}
+\label{subsec:strumenti}
+\begin{itemize}
+	\item Pistone in grafite libero di scorrere con attrito trascurabile in un cilindro in pyrex [diametro $\Phi = \SI{32.5 \pm 0.1}{mm}$];
+	\item Camera di espansione metallica chiusa da tappo in gomma;
+	\item Termometro a mercurio [risoluzione: \SI{0.2}{\degree C}, incertezza: \SI{0.03}{\degree C}];
+	\item 2 Calorimetri Dewar;
+	\item Tappo per calorimetro;
+	\item Bilancia [portata: \SI{8000}{g}, risoluzione: \SI{0.1}{g}, incertezza: \SI{0.03}{g}].
+\end{itemize}
+\subsection{Sensori}
+I seguenti sensori utilizzati sono interfacciati con il software \emph{DataStudio}.
+\begin{itemize}
+	\item Sensore di posizione angolare, che registra quindi lo spostamento del pistone [risoluzione: \SI{1.e-5}{m}];
+	\item Sensore di bassa pressione [risoluzione: \SI{0.01}{kPa}];
+	\item Sensore di temperatura [risoluzione: \SI{1.e-5}{\degree C}].
+\end{itemize}
+%==================================================
+%            SEQUENZA OPERAZIONI SPERIMENTALI
+%==================================================
+\section{Sequenza Operazioni Sperimentali} 
+
+\subsection{Costante di tempo del termometro}
+\label{subsec:costante_termometro}
+
+\subsection{Verifica della Legge di Boyle}
+\label{subsec:Boyle}
+
+\subsection{Verifica della Legge di Gay-Lussac}
+\label{subsec:Gay-Lussac}
+
+\subsection{Verifica della Legge di Charles}
+\label{subsec:Charles}
+
+\subsection{Realizzazione di un ciclo termico}
+\label{subsec:ciclo}
+
+
+%==================================================
+%				    CONCLUSIONI
+%==================================================
+\section{Considerazioni finali}
+
+
+
+
+
+
+
+
+\end{document}
