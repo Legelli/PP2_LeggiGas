@@ -26,6 +26,8 @@
 \usepackage{mathrsfs}
 %\usepackage[utf8]{inputenc}
 
+\usepackage{multicol}
+
 \newcommand{\var}{\operatorname{var}}
 \newcommand{\cov}{\operatorname{cov}}
 
@@ -59,7 +61,7 @@ stepnumber=2, numbersep=5pt, frame=shadowbox,  showstringspaces=false, #1}}{}
 		\vspace{1cm}
 		\begin{tabular}{ccc}
 			Esperienza di laboratorio && Consegna della relazione \\
-			\emph{\small{6 novembre 2017}} &&  \emph{\small{19 novembre 2017}}\\
+			\emph{\small{6 novembre 2017}} &&  \emph{\small{26 novembre 2017}}\\
 			\emph{\small{15 novembre 2017}} &&  \\
 		\end{tabular} 
 		\vspace{0.5cm}
@@ -75,13 +77,23 @@ Mediante un sistema pistone-cilindro, collegabile ad una camera di espansione, s
 \listoffigures %Indice dei grafici
 
 \pagebreak
+\begin{multicols}{2}
 
 %==================================================
 %         SCOPO E DESCRIZIONE DELL'ESPERIENZA
 %==================================================
 \section{Scopo e descrizione dell'esperienza}
 \label{sec:descrizione}
+Il modello fisico del \emph{gas ideale}, che è approssimato dai gas reali tanto più essi operano a pressioni minori, è descritto dall'equazione universale dei gas,
+\begin{equation}
+\label{eq:pvnrt}
+PV = nRT,
+\end{equation}
+che lega tra loro, data una quantità supposta costante di gas, indicata dal numero di moli $n$, durante la trasformazione, le variabili termodinamiche pressione, temperatura e volume, e permette di esprimere l'una in funzione delle altre due; la costante $R$ è detta \emph{costante universale dei gas}, ed ha il valore, qui considerato esatto, $R = \SI{8.31}{J/(mol \cdot K)}$. Tale legge contempla quali casi particolari le tre leggi dei gas di Boyle, Gay-Lussac e Charles, che esprimono una variabile termodinamica in funzione dell'altra, tenuta la terza costante e a prevedendo la stessa quantità di gas durante tutta la trasformazione.
 
+In questa esperienza si studieranno singolarmente gli andamenti delle variabili termodinamiche tenendo di volta in volta costante una delle tre, realizzando dunque, mediante un cilindro dotato di pistone ed una camera di espansione, trasformazioni \emph{isocore}, \emph{isobare} e \emph{isoterme}.
+
+Si procederà quindi alla realizzazione di un ciclo termodinamico che, contemplando anche la presenza di una trasformazione \emph{adiabatica}, permetterà di evidenziare come il lavoro compiuto sia diverso da zero lungo un percorso che riporta il sistema allo stato iniziale, e in particolare esso sia pari alla variazione di energia potenziale delle masse utilizzate nel corso del processo.
 
 Per l'analisi dati si utilizzerà un notebook in linguaggio \emph{Python}.
 
@@ -98,7 +110,8 @@ Per l'analisi dati si utilizzerà un notebook in linguaggio \emph{Python}.
 	\item Termometro a mercurio [risoluzione: \SI{0.2}{\degree C}, incertezza: \SI{0.03}{\degree C}];
 	\item 2 Calorimetri Dewar;
 	\item Tappo per calorimetro;
-	\item Bilancia [portata: \SI{8000}{g}, risoluzione: \SI{0.1}{g}, incertezza: \SI{0.03}{g}].
+	\item Bilancia [portata: \SI{8000}{g}, risoluzione: \SI{0.1}{g}, incertezza: \SI{0.03}{g}];
+	\item Resistenza elettrica a \SI{30}{V}.
 \end{itemize}
 \subsection{Sensori}
 I seguenti sensori utilizzati sono interfacciati con il software \emph{DataStudio}.
@@ -115,8 +128,90 @@ I seguenti sensori utilizzati sono interfacciati con il software \emph{DataStudi
 \subsection{Costante di tempo del termometro}
 \label{subsec:costante_termometro}
 
+
+% LEGGE DI BOYLE
 \subsection{Verifica della Legge di Boyle}
 \label{subsec:Boyle}
+\paragraph{Modello fisico ideale}
+Un gas a temperatura costante, sottoposto a variazioni di volume, aumenta o diminuisce la pressione esercitata sulle pareti del contenitore mantenendo il prodotto della pressione per il volume costante:
+\begin{equation} 
+\label{eq:boyle}
+PV = \text{cost} \;\;\; \text{\small(\emph{Legge di Boyle})}.
+\end{equation}
+Da tale equazione, dunque, si prevede un andamento lineare del grafico della pressione in funzione del reciproco del volume. Per piccole variazioni di pressione attorno alla pressione atmosferica $P_0 = \SI{1.01e5}{Pa}$, assumendo costante il numero di moli del gas contenuto nel sistema, si può sviluppare in serie l'espressione di $V$:
+\begin{equation*}
+V = \frac{nRT}{P} \sim \frac{nRT}{P_0}\big[2-\frac{P}{P_0}\big]
+\end{equation*}
+\begin{equation}
+\label{eq:boylelin}
+\rightarrow \Delta V = - \frac{V_0}{P_0} \Delta P.
+\end{equation}
+
+\paragraph{Sistema reale}
+Il sistema termodinamico studiato utilizza come gas l'aria, che per variazioni di pressione piccole se comparate alla pressione atmosferica si comporta sostanzialmente seguendo la legge dei gas. Tuttavia è da tener conto del fatto che vi possano essere consistenti perdite di gas nel cilindro, in quanto il pistone, nella sua corsa, non è ermeticamente aderente al cilindro; ulteriore causa di errore è dovuta alla non precisa determinazione del volume inizialmente occupato dal gas: sono infatti presenti dei tubi per collegare il sistema al sensore di bassa pressione e alla camera di espansione, il cui volume non si è in grado di misurare con la medesima accuratezza. Si stima, tuttavia, che esso sia trascurabile rispetto a quello occupato nel cilindro e nella camera di espansione. 
+
+La misura del volume iniziale viene effettuata con il pistone e il cilindro in posizione orizzontale e il gas sottoposto alla sola pressione atmosferica; il pistone viene posizionato all'altezza di $h = \SI{0.0650 \pm 0.0003}{m}$, lettura data dalla scala presente sul cilindro e con errore associato dato dall'interpolazione tra le tacche. Noto il diametro $\Phi$ del cilindro, si ottiene
+\begin{equation*}
+V_0 = \SI{5.39 \pm 0.04 e-5}{m^3}
+\end{equation*}
+dove si è utilizzato
+\begin{equation*}
+V_0 = h\pi\Big(\frac{\Phi}{2}\Big)^2 
+\end{equation*}
+e per l'incertezza
+\begin{equation*}
+\sigma_V^2 = \Big(\frac{\Phi\pi h}{2}\Big)^2\sigma_\Phi^2 + \Big(\frac{\Phi^2\pi}{4}\Big)^2\sigma_h^2.
+\end{equation*}
+La pressione iniziale è invece quella atmosferica, assunta senza incertezza, $P_0 = \SI{1.01e5}{Pa}$.
+Da tali valori iniziali, utilizzando la legge dei gas, è possibile fornire una stima del numero di moli presenti nel sistema all'inizio, presa come temperatura quella iniziale del sistema, $T_0 = \SI{25.51 \pm 0.03}{\degree C} = \SI{298.66 \pm 0.03}{K}$, ottenuta come la media con deviazione standard dei primi dieci valori acquisiti dal sensore:
+\begin{equation*}
+n = \frac{P_0V_0}{RT} = \SI{2.19 \pm 0.02 e-3}{mol},
+\end{equation*}
+con errore dato da 
+\begin{equation*}
+\sigma_n = n\sqrt{\Big(\frac{\sigma_{V_0}}{V_0}\Big)^2 + \Big(\frac{\sigma_{T_0}}{T_0}\Big)^2}.
+\end{equation*}
+
+\paragraph{Procedura e presa dati}
+L'esperimento è stato condotto nel modo seguente:
+\begin{enumerate}
+\item Si posiziona il cilindro orizzontalmente, con il pistone all'altezza $h$ discussa precedentemente; si misura volume e pressione iniziale;
+\item Si collega il sensore di bassa pressione da un lato all'interfaccia e dall'altro al cilindro; quindi, si pone quale valore di calibrazione la pressione di \SI{0}{kPa};
+\item Si collega il sensore di posizione all'interfaccia: esso misura le variazioni di posizione del pistone mediante la rotazione di una puleggia, attorno alla quale scorre un filo solidale con il pistone stesso. Si imposta il software in modo che esso restituisca direttamente il valore della variazione di posizione lineare, traducendo da quella angolare della puleggia;
+\item Si esercita fisicamente una pressione lenta e continua sul pistone, al fine di comprimerlo, e si campionano i dati con frequenza di \SI{10}{Hz}.
+\item Si ripete il procedimento portando inizialmente il gas ad una temperatura diversa, mediante la camera di espansione, al fine di verificare la validità della legge anche lungo un'altra isoterma.
+\end{enumerate}
+La raccolta dati di posizione, in \SI{}{m}, e temperatura, in \SI{}{\degree C}, è stata effettuata con cinque cifre dopo la virgola, mentre quella della pressione, in \SI{}{kPa}, con due cifre decimali. Si assume pertanto come incertezza sul singolo dato l'ultimo digit diviso per $\sqrt{12}$.
+
+{
+\centering
+\includegraphics[width=0.5\textwidth]{Pvs1_V.pdf}
+\captionof{figure}{Andamento di $P$ in funzione di $1/V$}
+\label{fig:Pvs1_V}
+}
+
+Alla temperatura media di \SI{298.73 \pm 0.02}{K}, calcolata come media dei valori acquisiti dal sensore per tutta la durata del processo in esame, l'andamento della pressione del gas in funzione del reciproco del volume è riportato in figura~\ref{fig:Pvs1_V}; per ricavare la variazione di volume a partire dalla misura di variazione di posizione $x$ acquisita dal sensore si è utilizzato
+\begin{equation*}
+\Delta V = x\pi\Big(\frac{\Phi}{2}\Big)^2,
+\end{equation*}
+e successivamente si è sommato tale valore al valore del volume iniziale $V_0$; allo stesso modo si è operato per la pressione, con $P = P_0 + \Delta P$.
+
+{
+\centering
+\includegraphics[width=0.5\textwidth]{deltaPdeltaV.pdf}
+\captionof{figure}{Andamento di $\Delta V$ in funzione di $\Delta P$}
+\label{fig:deltaPdeltaV}
+}
+
+Utilizzando invece la linearizzazione della legge data dall'equazione~\ref{eq:boylelin}, si riporta nel grafico di figura~\ref{fig:deltaPdeltaV} l'andamento della variazione di volume in funzione della variazione di pressione.
+
+
+
+
+
+
+
+
 
 \subsection{Verifica della Legge di Gay-Lussac}
 \label{subsec:Gay-Lussac}
@@ -135,7 +230,7 @@ I seguenti sensori utilizzati sono interfacciati con il software \emph{DataStudi
 
 
 
-
+\end{multicols}
 
 
 
