@@ -261,7 +261,61 @@ Confrontando tale valore con quello teorico calcolato precedentemente (cfr. equa
 
 \subsection{Realizzazione di un ciclo termico}
 \label{subsec:ciclo}
+Si vuole infine realizzare un ciclo termodinamico che produce un lavoro meccanico, misurare quantitativamente tale lavoro e confrontarlo con il lavoro previsto dallo studio empirico dei dati. In particolare si vuole sollevare una massa $m$ attraverso un ciclo realizzato da:
+\begin{enumerate}
+	\item una trasformazione \emph{(circa)} isocora per portare la pressione del gas da $P_0$ a $P_1>P_0$,
+	\item una trasformazione \emph{(circa)} isobara per portare il volume da $V \sim V_0$ a $V_1 > V_0$,
+	\item una trasformazione \emph{(circa)} isocora per riportare la pressione del gas $P_1$ a $P_0$,
+	\item una trasformazione \emph{(circa)} isobara per riportare il volume da $V_1$ a $V_0$.
+\end{enumerate}
+La massa $m$ subirà un lavoro
+\[
+	L_m = m g \Delta h
+\] dove $g$ è l'accelerazione gravitazionale (si assume essere pari a $\SI{9.81}{m/s^2}$) e $\Delta h$ la variazione di quota, tale lavoro sarà generato dal ciclo termodinamico realizzato e dovrà quindi essere pari al lavoro effettuato dal gas sull'ambiente, di valore
+\[
+	L_g = \oint P V dV
+\] ovvero all'area del grafico del ciclo in un piano di Clapeyron.
+\paragraph{Procedura e presa dati} Si prepara l'apparato così realizzato: 
+\begin{enumerate}
+	\item un calorimetro contenente acqua molto calda a temperatura $T_{+}$,
+	\item un calorimetro contenente acqua fredda a temperatura $T_{-}<<T_{+}$,
+	\item una massa $m$,
+	\item un pistone adiabatico contenente gas a pressione atmosferica, collegato ad una camera mobile non adiabatica, ad un misuratore digitale di pressione e ad un misuratore digitale di posizione.
+\end{enumerate}
+Si misura preliminarmente il diametro del pistone in modo da poter calcolare la variazione di volume del gas al suo interno avendo nota la variazione di posizione del pistone stesso, tale diametro è pari a 
+\[
+	d = \SI{21.5 \pm 0.1}{mm}
+\], dunque si immerge la camera non adiabatica nel calorimetro contenente acqua fredda e si attende che il gas si porti a temperatura $T_{-}$. A questo punto si cominciano a prendere le misure di pressione e di volume del gas e si realizza il ciclo termodinamico: la prima trasformazione viene realizzata posizionando la massa $m$ sul pistone, il che fa aumentare repentinamente la pressione del gas facendo variare di una quantità trascurabile il volume dello stesso, dunque si realizza la seconda trasformazione portando la camera non adiabatica nel calorimetro con l'acqua calda, l'incremento di temperatura fa espandere il gas senza però far variare la pressione (che è uguale a quella atmosferica insieme a quella generata dalla massa), la terza trasformazione viene realizzata rimuovendo repentinamente la massa dal pistone, ciò fa diminuire la pressione, l'ultima trasformazione di realizza quindi riportando la camera nell'acqua a temperatura $T_{-}$ e aspettando che il gas raggiunga di nuovo la temperatura iniziale.
 
+Con una massa pari a 
+\[
+	m = \SI{0.1153 \pm 0.0001}{kg}
+\] e con un'escursione termica trai calorimetri sufficientemente alta (circa $\SI{70}{°}$) si realizza il ciclo termodinamico riportato in figura \ref{fig:ciclo}.
+\begin{Figure}
+\centering
+\includegraphics[width=\textwidth]{ciclo.pdf}
+\captionof{figure}{Ciclo termodinamico}
+\label{fig:ciclo}
+\end{Figure}
+
+È necessario avere uno scarto termico elevato per poter riscaldare il gas in un tempo sufficientemente breve da poter rendere trascurabili le perdite di moli attraverso la guarnizione del pistone: per lo stesso scopo si è cercato di essere il più rapidi possibile tra la prima e la seconda trasformazione.
+
+La massa $m$ è stata sollevata di una quota 
+\[
+	dh = \SI{0.01244 \pm 0.00001}{m}
+\] dunque ha subito un lavoro 
+\[
+	L_m = \SI{0.01407 \pm 0.00002}{J},
+\]dove l'incertezza, avendo supposto $g$ senza incertezza, è stata presa come
+\[
+	\delta_{L_m} = L_m \sqrt{\left(\frac{\delta_{\Delta h}}{\Delta h}\right)^2 + \left(\frac{\delta_m}{m}\right)^2}.
+\]
+
+I lati superiore e inferiore della figura realizzata dal ciclo, misurati come la differenza tra il massimo e il minimo valore del volume (opportunamente diviso), sono uguali nei limiti dell'incertezza, quindi si può approssimare in modo legittimo la figura ad un parallelogramma di area
+\[
+	A = \SI{0.01497 \pm 0.0001}{J}.
+\]
+Vediamo che $A \sim L_m$, in accordo con la teoria.
 
 %==================================================
 %				    CONCLUSIONI
