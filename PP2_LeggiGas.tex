@@ -27,6 +27,10 @@
 %\usepackage[utf8]{inputenc}
 
 \usepackage{multicol}
+\newenvironment{Figure}
+  {\par\medskip\noindent\minipage{\linewidth}}
+  {\endminipage\par\medskip}
+
 
 \newcommand{\var}{\operatorname{var}}
 \newcommand{\cov}{\operatorname{cov}}
@@ -111,7 +115,8 @@ Per l'analisi dati si utilizzerà un notebook in linguaggio \emph{Python}.
 	\item 2 Calorimetri Dewar;
 	\item Tappo per calorimetro;
 	\item Bilancia [portata: \SI{8000}{g}, risoluzione: \SI{0.1}{g}, incertezza: \SI{0.03}{g}];
-	\item Resistenza elettrica a \SI{30}{V}.
+	\item Resistenza elettrica a \SI{30}{V};
+	\item Calibro ventesimale [portata: \SI{200}{mm}, incertezza: \SI{0.05}{mm}].
 \end{itemize}
 \subsection{Sensori}
 I seguenti sensori utilizzati sono interfacciati con il software \emph{DataStudio}.
@@ -150,23 +155,46 @@ V = \frac{nRT}{P} \sim \frac{nRT}{P_0}\big[2-\frac{P}{P_0}\big]
 \paragraph{Sistema reale}
 Il sistema termodinamico studiato utilizza come gas l'aria, che per variazioni di pressione piccole se comparate alla pressione atmosferica si comporta sostanzialmente seguendo la legge dei gas. Tuttavia è da tener conto del fatto che vi possano essere consistenti perdite di gas nel cilindro, in quanto il pistone, nella sua corsa, non è ermeticamente aderente al cilindro; ulteriore causa di errore è dovuta alla non precisa determinazione del volume inizialmente occupato dal gas: sono infatti presenti dei tubi per collegare il sistema al sensore di bassa pressione e alla camera di espansione, il cui volume non si è in grado di misurare con la medesima accuratezza. Si stima, tuttavia, che esso sia trascurabile rispetto a quello occupato nel cilindro e nella camera di espansione. 
 
-La misura del volume iniziale viene effettuata con il pistone e il cilindro in posizione orizzontale e il gas sottoposto alla sola pressione atmosferica; il pistone viene posizionato all'altezza di $h = \SI{0.0650 \pm 0.0003}{m}$, lettura data dalla scala presente sul cilindro e con errore associato dato dall'interpolazione tra le tacche. Noto il diametro $\Phi$ del cilindro, si ottiene
+Il volume occupato dal gas nella camera di espansione viene calcolato a partire dalla misura con un calibro ventesimale, utilizzando i becchi interni e la parte terminale, delle dimensioni della stessa; si ottiene 
 \begin{equation*}
-V_0 = \SI{5.39 \pm 0.04 e-5}{m^3}
+\begin{aligned}
+\phi = \SI{36.45 \pm 0.05}{mm} \;\; \text{\small (diametro)} \\
+\bar{h} = \SI{85.55 \pm 0.05}{mm} \;\; \text{\small (altezza)}.
+\end{aligned}
+\end{equation*}
+Constatandone la forma cilindrica e trascurando il volume occupato dal tappo, piccolo se rapportato a quello complessivo, si ottiene
+\begin{equation*}
+V_\text{camera} = \Big(\frac{\phi}{2}\Big)^2\pi \bar{h} = \SI{8.93 \pm 0.03 e-5}{m^3},
+\end{equation*}
+con incertezza calcolata con
+\begin{equation}
+\label{eq:sigmaV}
+\sigma_V^2 = \Big(\frac{\Phi\pi h}{2}\Big)^2\sigma_\Phi^2 + \Big(\frac{\Phi^2\pi}{4}\Big)^2\sigma_h^2.
+\end{equation}
+
+La misura del volume iniziale viene effettuata con il pistone e il cilindro in posizione orizzontale e il gas sottoposto alla sola pressione atmosferica; il pistone viene posizionato all'altezza di $h = \SI{0.0650 \pm 0.0003}{m}$, lettura data dalla scala presente sul cilindro e con errore associato dato dall'interpolazione tra le tacche. Noto il diametro $\Phi$ del cilindro, si ottiene il volume del cilindro
+\begin{equation*}
+V_\text{cilindro} = \SI{5.39 \pm 0.04 e-5}{m^3}
 \end{equation*}
 dove si è utilizzato
 \begin{equation*}
-V_0 = h\pi\Big(\frac{\Phi}{2}\Big)^2 
+V_\text{cilindro} = h\pi\Big(\frac{\Phi}{2}\Big)^2 
 \end{equation*}
-e per l'incertezza
+e per l'incertezza l'equazione~\ref{eq:sigmaV}. A questo volume va sommato quello precedentemente calcolato per la camera di espansione, ottenendo quindi
+\small{
 \begin{equation*}
-\sigma_V^2 = \Big(\frac{\Phi\pi h}{2}\Big)^2\sigma_\Phi^2 + \Big(\frac{\Phi^2\pi}{4}\Big)^2\sigma_h^2.
+V_0 = V_\text{cilindro} + V_\text{camera} = \SI{1.432 \pm 0.005 e-4}{m^3}.
 \end{equation*}
+}
+\normalsize
+
+
 La pressione iniziale è invece quella atmosferica, assunta senza incertezza, $P_0 = \SI{1.01e5}{Pa}$.
 Da tali valori iniziali, utilizzando la legge dei gas, è possibile fornire una stima del numero di moli presenti nel sistema all'inizio, presa come temperatura quella iniziale del sistema, $T_0 = \SI{25.51 \pm 0.03}{\degree C} = \SI{298.66 \pm 0.03}{K}$, ottenuta come la media con deviazione standard dei primi dieci valori acquisiti dal sensore:
-\begin{equation*}
-n = \frac{P_0V_0}{RT} = \SI{2.19 \pm 0.02 e-3}{mol},
-\end{equation*}
+\begin{equation}
+\label{eq:nteor}
+n_\text{teor} = \frac{P_0V_0}{RT} = \SI{5.83 \pm 0.02 e-3}{mol},
+\end{equation}
 con errore dato da 
 \begin{equation*}
 \sigma_n = n\sqrt{\Big(\frac{\sigma_{V_0}}{V_0}\Big)^2 + \Big(\frac{\sigma_{T_0}}{T_0}\Big)^2}.
@@ -183,12 +211,12 @@ L'esperimento è stato condotto nel modo seguente:
 \end{enumerate}
 La raccolta dati di posizione, in \SI{}{m}, e temperatura, in \SI{}{\degree C}, è stata effettuata con cinque cifre dopo la virgola, mentre quella della pressione, in \SI{}{kPa}, con due cifre decimali. Si assume pertanto come incertezza sul singolo dato l'ultimo digit diviso per $\sqrt{12}$.
 
-{
+\begin{Figure}
 \centering
-\includegraphics[width=0.5\textwidth]{Pvs1_V.pdf}
+\includegraphics[width=\textwidth]{Pvs1_V.pdf}
 \captionof{figure}{Andamento di $P$ in funzione di $1/V$}
 \label{fig:Pvs1_V}
-}
+\end{Figure}
 
 Alla temperatura media di \SI{298.73 \pm 0.02}{K}, calcolata come media dei valori acquisiti dal sensore per tutta la durata del processo in esame, l'andamento della pressione del gas in funzione del reciproco del volume è riportato in figura~\ref{fig:Pvs1_V}; per ricavare la variazione di volume a partire dalla misura di variazione di posizione $x$ acquisita dal sensore si è utilizzato
 \begin{equation*}
@@ -196,18 +224,30 @@ Alla temperatura media di \SI{298.73 \pm 0.02}{K}, calcolata come media dei valo
 \end{equation*}
 e successivamente si è sommato tale valore al valore del volume iniziale $V_0$; allo stesso modo si è operato per la pressione, con $P = P_0 + \Delta P$.
 
-{
+\begin{Figure}
 \centering
-\includegraphics[width=0.5\textwidth]{deltaPdeltaV.pdf}
+\includegraphics[width=\textwidth]{deltaPdeltaV.pdf}
 \captionof{figure}{Andamento di $\Delta V$ in funzione di $\Delta P$}
 \label{fig:deltaPdeltaV}
-}
-
-Utilizzando invece la linearizzazione della legge data dall'equazione~\ref{eq:boylelin}, si riporta nel grafico di figura~\ref{fig:deltaPdeltaV} l'andamento della variazione di volume in funzione della variazione di pressione.
+\end{Figure}
 
 
+Utilizzando invece la linearizzazione della legge data dall'equazione~\ref{eq:boylelin}, si riporta nel grafico di figura~\ref{fig:deltaPdeltaV} l'andamento della variazione di volume in funzione della variazione di pressione. Si procede quindi ad effettuare un fit lineare, ottenendo come valore del coefficiente angolare
+\begin{equation*}
+m  = \SI{-1.209 \pm 0.004 e-9}{m^3 / Pa};
+\end{equation*}
+tale valore è accompagnato da incertezza stimata a partire dal chi quadro: quest'ultimo, in prima analisi, risultava non compatibile con il numero di gradi di libertà, dato dal numero di dati meno due, e di molto maggiore, indice del fatto che le incertezze sulla variazione di volume calcolate per ogni singola acquisizione mediante l'equazione~\ref{eq:sigmaV} fossero di molto sottostimate. Si ritiene che questo sia dovuto alla perdita costante di parte del gas nel sistema sottoposto alla riduzione del suo volume, che non è tenuta in considerazione dall'alta accuratezza scelta nell'acquisizione operata dal sensore. Nel grafico rappresentato, di conseguenza, si sono rappresentate con le barre di errore verticale le incertezze sui valori di $\Delta V$ stimate a partire dal chi quadro; al fine di migliorare la leggibilità, inoltre, si è rappresentato un dato ogni quattro.
 
-
+Ricordando che $m = - V_0 / P_0$ è possibile stimare dal fit, per mezzo di un metodo indiretto, il numero di moli di gas, supposte idealmente costanti, che hanno preso parte al processo termodinamico; si ha
+\begin{equation*}
+n_\text{indir} = \frac{P_0^2 \vert m \vert}{R T} = \SI{4.97 \pm 0.02 e-3}{mol},
+\end{equation*}
+con incertezza data da 
+\begin{equation*}
+\sigma_n = n\sqrt{\Big(\frac{\sigma_{m}}{m}\Big)^2 + \Big(\frac{\sigma_{T_0}}{T_0}\Big)^2};
+\end{equation*}
+in questo caso, la temperatura $T$ è ottenuta come media di tutti i valori acquisiti dal sensore nel corso dell'intera durata del processo: $T = \SI{25.58 \pm 0.02}{\degree C} = \SI{298.73 \pm 0.02}{K}$. Tale valore, inoltre, giustifica la assunta isotermia del fenomeno considerato.
+Confrontando tale valore con quello teorico calcolato precedentemente (cfr. equazione~\ref{eq:nteor}), si evince che nel corso del processo il numero di moli di gas è diminuito, come era stato previsto dalla considerazione della non perfetta tenuta delle giunture tra i tubi e del pistone stesso nel cilindro.
 
 
 
