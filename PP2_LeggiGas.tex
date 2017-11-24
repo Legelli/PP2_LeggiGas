@@ -256,41 +256,103 @@ Confrontando tale valore con quello teorico calcolato precedentemente (cfr. equa
 \subsection{Verifica della Legge di Gay-Lussac}
 \label{subsec:Gay-Lussac}
 
-\subsection{Verifica della Legge di Charles}
-\label{subsec:Charles}
+\subsection{Verifica della Legge di Charles}\label{subsec:Charles}
+\paragraph{Modello ideale}Si vuole verificare che per un gas ideale a pressione costante e a moli costanti la variazione di volume è direttamente proporzionale alla variazione di temperatura, ovvero
+\begin{equation}\label{eq:charles}
+	\frac{V}{T} = \text{cost},
+\end{equation} 
+anche nota come \emph{Legge di Charles}. Ricordando poi la \emph{legge di stato di un gas ideale}
+\begin{equation}\label{eq:stato}
+	PV = nRT
+\end{equation} si vede subito che
+\begin{equation}\label{eq:retta_charles}
+	V = \frac{nR}{P}T,
+\end{equation} avendo quindi nota la pressione del gas durante la trasformazione e la costante $R$ sarà possibile stimare la quantità di moli presenti nel recipiente, in quanto si vorrà interpolare linearmente i dati e ricavare il valore del coefficiente angolare della retta attesa.
+\paragraph{Sistema reale}Nei limiti del nostro esperimento l'aria può essere considerata un gas ideale. La differenza più rilevante tra il modello ideale e il sistema fisico reale sta nella non perfetta tenuta della guarnizione del pistone, ossia nella non conservazione delle moli totali del gas. Tale effetto è ovviamente tanto più marcato quanto più è elevata la pressione del gas, nel nostro esperimento però il gas verrà mantenuto a pressione atmosferica quindi non ci si aspetta un effetto eccessivo.
+
+Il volume inizialmente occupato dal gas è
+\[
+	V_0 =\SI{1.167 \pm 0.005 e-4}{m^3},
+\] calcolato nello stesso modo descritto nella verifica della \emph{Legge di Boyle}, dove stavolta l'altezza iniziale del pistone è 
+\[
+	h = \SI{33 \pm 0.05}{mm}.
+\] La temperatura iniziale del gas, presa come media delle prime 10 misure del sensore di temperatura, risulta essere pari a 
+\[
+	T_0 = \SI{197.18 \pm 0.03}{K},
+\] la stima del numero di moli contenute inizialmente all'interno del sistema è dunque
+\begin{equation}\label{eq:moli_previste_charles}
+	n_{\text{iniziali}} = \frac{P_0 V_0}{T_0 R} = \SI{4.77 \pm 0.02 e-3}{mol}.
+\end{equation}
+
+\paragraph{Procedura e presa dati} Si effettua dunque l'esperimento: si porta il gas nel sistema a pressione atmosferica, aprendo e poi chiudendo la valvola tra il sistema e l'ambiente esterno, dunque si immerge la camera non adiabatica del sistema all'interno del calorimetro contenente acqua a temperatura 
+\[
+	T_0 = \SI{197.18 \pm 0.03}{K},
+\]si aspetta che il gas raggiunga l'equilibrio termico con l'acqua e si accende una resistenza elettrica posta all'interno dell'acqua, in modo da cominciare a riscaldarla. Si comincia ad accumulare i dati di pressione, di volume e di temperatura del gas.
+Il gas all'interno del sistema rimane in equilibrio termico con l'acqua, quindi si riscalda insieme ad essa. L'aumento di temperatura causa un'espansione, misurata attraverso il sensore di posizione collegato al pistone\footnote{La conversione dalla misura di posizione alla misura di volume è fatta come descritto nella sezione precedente.}; la pressione risulta essere sempre costante e pari alla pressione atmosferica.
+L'andamento del volume al variare della temperatura è riportato nel grafico \ref{fig:charles}, dove viene riportata una misura ogni cento. Nello stesso grafico è mostrato il fit lineare dei dati. Si vede come, per un piccolo intervallo di temperatura, l'andamento reale è in accordo con il modello teorico.
+
+\begin{Figure}
+\centering
+\includegraphics[width=\textwidth]{charles.pdf}
+\captionof{figure}{Andamento del volume in funzione della variazione di temperatura a pressione costante per un intervallo di tempo di qualche minuto.}
+\label{fig:charles}
+\end{Figure}
+
+Il coefficiente angolare del fit risulta essere pari a
+\[
+	m = \SI{0.38 \pm 0.01}{cm^3/K},
+\] ricordando quindi (\ref{eq:retta_charles}) è possibile da questo parametro inferire il numero di moli presenti all'interno del sistema (che si suppone vengano conservate), ossia
+\begin{equation}\label{eq:moli_inferite_charles}
+	n_{\text{inferite}} = \SI {4.6 \pm 0.14 e-3}{mol}
+\end{equation}che si vede essere compatibile con quello previsto in (\ref{eq:moli_previste_charles}). L'incertezza su tale stima è stata presa propagando su (\ref{eq:retta_charles}) l'incertezza del coefficiente angolare del fit lineare, quest'ultimo valore è pari a
+\[
+	\delta_{m} =  \left(\frac{ N \text{var}[\Delta T]}{\delta_{\Delta V}^2}\right)^{-1/2},
+\] dove var$[\Delta T]$ è il braccio di leva delle misure di differenza di temperatura e $N$ il numero di misure nell'intervallo di tempo considerato. 
+
+In particolare si può vedere che le moli inferite risultano essere poco minori di quelle previste, ciò non è sorprendente e porta anzi a scegliere di studiare il sistema in un intervallo di tempo piuttosto breve (qualche minuto al massimo): il sistema non è perfettamente ermetico e nel corso del tempo le moli di gas diminuiscono, questo effetto è tanto più consistente quanto più è grande la pressione e quanto più dura la misura, se infatti si provasse ad analizzare i dati in un tempo più lungo (decine di minuti) si potrebbe vedere che i risultati uscirebbero completamente discostati dalle previsioni teoriche.
+
 
 \subsection{Realizzazione di un ciclo termico}
 \label{subsec:ciclo}
 Si vuole infine realizzare un ciclo termodinamico che produce un lavoro meccanico, misurare quantitativamente tale lavoro e confrontarlo con il lavoro previsto dallo studio empirico dei dati. In particolare si vuole sollevare una massa $m$ attraverso un ciclo realizzato da:
 \begin{enumerate}
-	\item una trasformazione \emph{(circa)} isocora per portare la pressione del gas da $P_0$ a $P_1>P_0$,
-	\item una trasformazione \emph{(circa)} isobara per portare il volume da $V \sim V_0$ a $V_1 > V_0$,
-	\item una trasformazione \emph{(circa)} isocora per riportare la pressione del gas $P_1$ a $P_0$,
-	\item una trasformazione \emph{(circa)} isobara per riportare il volume da $V_1$ a $V_0$.
+	\item una trasformazione adiabatica irreversibile per portare la pressione del gas da $P_a$ a $P_b>P_a$,
+		\[ A(P_a, V_a, T_{-}) \rightarrow B(P_b, V_b, T_b); \]
+	\item una trasformazione isobara per portare il volume da $V_b$ a $V_c > V_b$,
+		\[ B(P_b, V_b, T_b) \rightarrow C(P_b, V_c, T_{+}); \]
+	\item una trasformazione adiabatica irreversibile per riportare la pressione del gas da $P_b$ a $P_a$,
+		\[ C(P_b, V_c, T_{+}) \rightarrow D(P_a, V_d, T_c); \] 
+	\item una trasformazione isobara per riportare il volume da $V_d$ a $V_a$;
+		\[D(P_a, V_d, T_c) \rightarrow A(P_a, V_a, T_{-}).\]
 \end{enumerate}
 La massa $m$ subirà un lavoro
 \[
 	L_m = m g \Delta h
-\] dove $g$ è l'accelerazione gravitazionale (si assume essere pari a $\SI{9.81}{m/s^2}$) e $\Delta h$ la variazione di quota, tale lavoro sarà generato dal ciclo termodinamico realizzato e dovrà quindi essere pari al lavoro effettuato dal gas sull'ambiente, di valore
+\] dove $g$ è l'accelerazione gravitazionale (si assume essere pari a $\SI{9.81}{m/s^2}$) e $\Delta h$ la variazione di quota: tale lavoro sarà interamente generato dal ciclo termodinamico e dovrà quindi essere pari al lavoro effettuato dal gas sull'ambiente, di valore
 \[
-	L_g = \oint P V dV
+	L_g = \oint_{ABCDA} P V dV
 \] ovvero all'area del grafico del ciclo in un piano di Clapeyron.
 \paragraph{Procedura e presa dati} Si prepara l'apparato così realizzato: 
 \begin{enumerate}
 	\item un calorimetro contenente acqua molto calda a temperatura $T_{+}$,
-	\item un calorimetro contenente acqua fredda a temperatura $T_{-}<<T_{+}$,
+	\item un calorimetro contenente acqua fredda a temperatura $T_{-}<T_{+}$,
 	\item una massa $m$,
-	\item un pistone adiabatico contenente gas a pressione atmosferica, collegato ad una camera mobile non adiabatica, ad un misuratore digitale di pressione e ad un misuratore digitale di posizione.
+	\item un pistone ermetico e adiabatico in posizione verticale contenente gas a pressione atmosferica, collegato ad una camera mobile non adiabatica, ad un misuratore digitale di pressione, ad un misuratore digitale di posizione e ad un sensore di temperatura.
 \end{enumerate}
 Si misura preliminarmente il diametro del pistone in modo da poter calcolare la variazione di volume del gas al suo interno avendo nota la variazione di posizione del pistone stesso, tale diametro è pari a 
 \[
-	d = \SI{21.5 \pm 0.1}{mm}
-\], dunque si immerge la camera non adiabatica nel calorimetro contenente acqua fredda e si attende che il gas si porti a temperatura $T_{-}$. A questo punto si cominciano a prendere le misure di pressione e di volume del gas e si realizza il ciclo termodinamico: la prima trasformazione viene realizzata posizionando la massa $m$ sul pistone, il che fa aumentare repentinamente la pressione del gas facendo variare di una quantità trascurabile il volume dello stesso, dunque si realizza la seconda trasformazione portando la camera non adiabatica nel calorimetro con l'acqua calda, l'incremento di temperatura fa espandere il gas senza però far variare la pressione (che è uguale a quella atmosferica insieme a quella generata dalla massa), la terza trasformazione viene realizzata rimuovendo repentinamente la massa dal pistone, ciò fa diminuire la pressione, l'ultima trasformazione di realizza quindi riportando la camera nell'acqua a temperatura $T_{-}$ e aspettando che il gas raggiunga di nuovo la temperatura iniziale.
-
+	d = \SI{32.5 \pm 0.1}{mm},
+\]dunque si immerge la camera non adiabatica nel calorimetro contenente acqua fredda e si attende che il gas si porti a temperatura $T_{-}$. A questo punto si cominciano a prendere le misure di pressione e di volume del gas e si realizza il ciclo termodinamico:
+\begin{enumerate}
+	\item la prima trasformazione viene realizzata posizionando la massa $m$ sul pistone, il che fa aumentare repentinamente la pressione del gas facendo variare il volume dello stesso,
+	\item la seconda trasformazione si realizza portando la camera non adiabatica nel calorimetro con l'acqua calda, l'incremento di temperatura fa espandere il gas senza però far variare la pressione (che è uguale a quella atmosferica insieme a quella generata dal peso della massa),
+	\item la terza trasformazione viene realizzata rimuovendo repentinamente la massa dal pistone, ciò fa diminuire la pressione e aumentare il volume, 
+	\item l'ultima trasformazione si realizza quindi riportando la camera nell'acqua a temperatura $T_{-}$ e aspettando che il gas raggiunga di nuovo la temperatura iniziale.
+\end{enumerate}
 Con una massa pari a 
 \[
 	m = \SI{0.1153 \pm 0.0001}{kg}
-\] e con un'escursione termica trai calorimetri sufficientemente alta (circa $\SI{70}{°}$) si realizza il ciclo termodinamico riportato in figura \ref{fig:ciclo}.
+\] e con un'escursione termica trai calorimetri sufficientemente alta (circa $\SI{70}{°}$) si realizza il ciclo termodinamico riportato in figura \ref{fig:ciclo}, gli stati assunti dal gas sono riportati in tabella \ref{tab:ciclo}.
 \begin{Figure}
 \centering
 \includegraphics[width=\textwidth]{ciclo.pdf}
@@ -298,12 +360,28 @@ Con una massa pari a
 \label{fig:ciclo}
 \end{Figure}
 
+Dai dati si vede che la temperatura non è coerente con le aspettative: nella trasformazione $C\rightarrow D$ si vede un incremento di temperatura invece che una diminuzione, il che si spiega se si considera che la camera non adiabatica non è tenuta all'interno dei calorimetri per un tempo sufficiente a raggiungere l'equilibrio termico, quindi durante la trasformazione il gas ha continuato ad assorbire calore dall'acqua calda; ciò non è influente ai fini dell'esperimento.
+
+\begin{center}
+\captionof{table}{Stati del gas nel ciclo termodinamico}
+\begin{tabular}{c|c|c|c}\label{tab:ciclo}
+		& P [$\SI{}{kPa}$] & $\Delta V$ [$\SI{}{m^3}$] & T [$\SI{}{K}$] \\
+		& $\pm 0.01 $ & $\pm 0.08e-6$ & $\pm 0.01$\\
+	\hline
+	 A & 0.30 & 0 & 275.41 \\
+	 B & 1.78 & -1.66e-6 & 275.41\\
+	 C & 1.78 &  8.24e-6 & 279.49\\
+	 D & 0.30 & 9.84e-6 & 281.61\\
+
+\end{tabular}
+\end{center}
+
 È necessario avere uno scarto termico elevato per poter riscaldare il gas in un tempo sufficientemente breve da poter rendere trascurabili le perdite di moli attraverso la guarnizione del pistone: per lo stesso scopo si è cercato di essere il più rapidi possibile tra la prima e la seconda trasformazione.
 
 La massa $m$ è stata sollevata di una quota 
 \[
 	dh = \SI{0.01244 \pm 0.00001}{m}
-\] dunque ha subito un lavoro 
+\]misurata come la differenza tra il massimo e il minimo valore assunto dalla posizione del pistone quando la posizione è minima, dunque tale massa ha subito un lavoro 
 \[
 	L_m = \SI{0.01407 \pm 0.00002}{J},
 \]dove l'incertezza, avendo supposto $g$ senza incertezza, è stata presa come
@@ -311,11 +389,12 @@ La massa $m$ è stata sollevata di una quota
 	\delta_{L_m} = L_m \sqrt{\left(\frac{\delta_{\Delta h}}{\Delta h}\right)^2 + \left(\frac{\delta_m}{m}\right)^2}.
 \]
 
-I lati superiore e inferiore della figura realizzata dal ciclo, misurati come la differenza tra il massimo e il minimo valore del volume (opportunamente diviso), sono uguali nei limiti dell'incertezza, quindi si può approssimare in modo legittimo la figura ad un parallelogramma di area
+I lati superiore e inferiore della figura realizzata dal ciclo, misurati come la differenza tra il massimo e il minimo valore del volume quando la pressione è massima e quando è minima, sono uguali nei limiti dell'incertezza, quindi si può approssimare in modo legittimo la figura ad un parallelogramma di area
 \[
-	A = \SI{0.01497 \pm 0.0001}{J}.
+	A = \Delta V  \Delta P = \SI{0.01497 \pm 0.0001}{J}.
 \]
-Vediamo che $A \sim L_m$, in accordo con la teoria.
+Si vede che $A > L_m$, ovvero si vede che il gas ha generato un lavoro superiore a quello necessario per sollevare la massa: questo è comprensibile se si ricorda che l'apparato strumentale a disposizione non è perfetto, in particolare non è perfetta la guarnizione all'interno del pistone, il che ha causato la perdita di alcune moli di gas durante le trasformazioni. 
+A tal proposito si potrebbe pensare di ridurre tale contributo di errore riducendo la pressione del gas (infatti, a rigor di logica, maggiore è la pressione del gas sulla guarnizione più è elevata la fuoriuscita di moli gassose), eppure successivi esperimenti hanno messo in luce che i risultati migliori si ottengono a masse (e quindi a pressioni applicate) maggiori, infatti per pressioni sufficientemente basse da non causare perdite influenti di moli si andava sotto la risoluzione del misuratore di pressione, falsando dunque i dati.
 
 %==================================================
 %				    CONCLUSIONI
