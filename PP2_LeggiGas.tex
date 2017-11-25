@@ -9,6 +9,7 @@
 \sisetup{output-decimal-marker = {.}, separate-uncertainty = true, input-uncertainty-signs = \pm, detect-weight=true, detect-family=true} %per usare SI con il punto decimale
 \usepackage{listings} %Per citare codice informatico formattandolo correttamente
 \usepackage{amsmath,amsthm,verbatim,amssymb,amsfonts,amscd, graphicx,mathtools}
+\usepackage[makeroom]{cancel}
 \newcommand{\abs}[1]{\left\lvert\,#1\,\right\rvert}
 \usepackage{geometry}
 \usepackage{epigraph}
@@ -99,7 +100,7 @@ In questa esperienza si studieranno singolarmente gli andamenti delle variabili 
 
 Si procederà quindi alla realizzazione di un ciclo termodinamico che, contemplando anche la presenza di una trasformazione \emph{adiabatica}, permetterà di evidenziare come il lavoro compiuto sia diverso da zero lungo un percorso che riporta il sistema allo stato iniziale, e in particolare esso sia pari alla variazione di energia potenziale delle masse utilizzate nel corso del processo.
 
-Per l'analisi dati si utilizzerà un notebook in linguaggio \emph{Python}.
+Per l'analisi dati si utilizzerà un notebook in linguaggio \texttt{Python}.
 
 
 %==================================================
@@ -125,11 +126,14 @@ I seguenti sensori utilizzati sono interfacciati con il software \emph{DataStudi
 	\item Sensore di bassa pressione [risoluzione: \SI{0.01}{kPa}];
 	\item Sensore di temperatura [risoluzione: \SI{1.e-5}{\degree C}].
 \end{itemize}
+Tutti e tre acquisiscono dati alla frequenza di \SI{10}{Hz}.
+
 %==================================================
 %            SEQUENZA OPERAZIONI SPERIMENTALI
 %==================================================
 \section{Sequenza Operazioni Sperimentali} 
 
+%COSTANTE DI TEMPO DEL TERMOMETRO
 \subsection{Costante di tempo del termometro}
 \label{subsec:costante_termometro}
 \paragraph{Modello fisico ideale}
@@ -137,8 +141,8 @@ Un termometro ideale alla temperatura d'equilibrio $T_0$,  immerso in un ambient
 T(t) = T_1 - (T_1-T_0)\,\,e^{-t/\tau}
 \end{equation}
 Osserviamo che:\begin{itemize}
-\item Se $T_0>T_1$ l'andamento della temperatura è decrescente e tende a $T_1$ (figura \ref{fig:TCF});
-\item Se  $T_0<T_1$ l'andamento della temperatura è crescente e tende a $T_1$ (figura \ref{fig:TFC})
+\item Se  $T_0<T_1$ l'andamento della temperatura è crescente e tende a $T_1$ (figura \ref{fig:TFC});
+\item Se $T_0>T_1$ l'andamento della temperatura è decrescente e tende a $T_1$ (figura \ref{fig:TCF}).
 \end{itemize}
 In entrambi i casi la temperatura è descritta da una funzione monotona. Operando una semplice manipolazione dell'equazione precedente:\begin{equation}\label{eqn:term}
 T(t)-T_1 = (T_0-T_1)\,\,e^{-t/\tau}
@@ -159,22 +163,22 @@ appare chiaro che in entrambi i casi l'andamento della quantità $T(t) - T_1$ è d
 \end{Figure}
 
 \paragraph{Sistema reale}
-Il sistema utilizzato è costituito da due calorimetri, ed un termometro. I due calorimetri contengono acqua a temperature rispettivamente $T_0$ e $T_1$. Il termometro è incastrato all'interno di una camera d'espansione contenete aria; le variazioni da esso registrate sono le variazioni di temperatura dell'aria, originate da conduzione di calore tra i due sistemi termodinamici considerati (acqua e camera).\\
-In particolare osserviamo che, passando da una temperatura d'equilibrio $T_0$ ad una temperatura $T_1$, nel caso in cui $T_0<T_1$ è l'acqua, calda, che cedendo calore riscalda la camera e l'aria in essa contenuta, nel caso in cui $T_0>T_1$ invece è la camera che, raffreddandosi, cede calore all'acqua.\\
-I due casi verranno analizzati separatamente.
+Il sistema utilizzato è costituito da due calorimetri ed un termometro (sensore di temperatura interfacciato con \emph{DataStudio}). I due calorimetri contengono acqua a temperatura rispettivamente $T_0$ e $T_1$. Il sensore di temperatura viene prima inserito nel calorimetro a temperatura $T_0$ e lasciato termalizzare, quindi nel calorimetro a temperatura $T_1$, e anche qui si acquisiscono dati fino al raggiungimento di un plateaux di valori. I due casi verranno analizzati separatamente.
 
 \paragraph{Procedura e presa dati}
-La presa dati dell'esperimento risulta abbastanza banale, si è proceduto nel modo seguente:
+Si è proceduto nel modo seguente:
 \begin{enumerate}
-\item Viene configurato il termometro su Data-Studio e scaldata l'acqua contenuta in uno dei due calorimetri mediante la resistenza elettrica. Nel frattempo la camera d'espansione con il termometro vengono messi all'interno del calorimetro freddo per raggiungere l'equilibrio.
-\item Viene rapidamente spostata la camera dal calorimetro freddo in quello caldo, misurando la risposta del termometro.
-\item Una volta verificato che il termometro fosse arrivato a plateaux esso viene spostato nuovamente nella camera fredda, acquisendo così il secondo set di dati.
+\item Si è configurato il termometro su \emph{DataStudio} e si è scaldata l'acqua contenuta in uno dei due calorimetri mediante la resistenza elettrica. Nel frattempo il sensore di temperatura è stato posto all'interno del calorimetro freddo e lasciato raggiungere l'equilibrio;
+\item Si è rapidamente spostata la camera dal calorimetro freddo in quello caldo, misurando la risposta del termometro.
+\item Una volta verificato che i valori acquisiti dal termometro siano arrivato a plateaux, lo si sposta nuovamente nel calorimetro freddo, acquisendo così il secondo set di dati.
 \end{enumerate} 
 
-Si procede dunque all'elaborazione dei dati mediante \texttt{Python} eliminando transienti iniziali e regioni caotiche finali. Si passa poi alla linearizzazione delle equazioni in modo da poter successivamente procedere ad un'interpolazione lineare. Passando al logaritmo l'equazione \ref{eqn:term} diventa:\begin{equation}
-\log(\abs{T(t)-T_1})=\log(\abs{T_0-T_1})-\dfrac{1}{\tau}t
+Si procede dunque all'elaborazione dei dati mediante \texttt{Python} eliminando transienti iniziali e regioni non lineari finali. Si passa poi alla linearizzazione delle equazioni in modo da poter successivamente procedere ad un'interpolazione lineare. Applicando il logaritmo, l'equazione \ref{eqn:term} diventa:
+\begin{equation}
+\label{eq:lintermometro}
+\log\abs{T(t)-T_1}=\log\abs{T_0-T_1}-\dfrac{1}{\tau}t
 \end{equation}
-Dove il valore assoluto viene usato per non violare il dominio della funzione logaritmica. Ci si aspetta dunque che la grandezza $y(t)=\log(\abs{T(t)-T_1})$ abbia un andamento all'incirca lineare. Quello che si osserva dalle figure \ref{fig:selected_Tfc} e \ref{fig:selected_Tcf} è che la regione di linearità è limitata ai primi 10-15 secondi. Si ci limita dunque all'interpolazione dei primi $1000-1500$ dati evidenziati in blu nelle figure.  
+Dove il valore assoluto viene usato per non violare il dominio della funzione logaritmica. Ci si aspetta dunque che la grandezza $y(t)=\log\abs{T(t)-T_1}$ abbia un andamento all'incirca lineare. Quello che si osserva dalle figure \ref{fig:selected_Tfc} e \ref{fig:selected_Tcf} è che la regione di linearità è limitata ai primi 10-15 secondi. Ci si limita dunque all'interpolazione dei primi $1000-1500$ dati, evidenziati in blu nelle figure.  
 \begin{Figure}
 \centering
 \includegraphics[width=\textwidth]{selected_Tfc.eps}
@@ -188,44 +192,53 @@ Dove il valore assoluto viene usato per non violare il dominio della funzione lo
 \label{fig:selected_Tcf}
 \end{Figure}
 
-Interpolando la grandezza $\log(\abs{T(t)-T_1})$ si hanno come parametri $A$ e $B$, intercetta e coefficiente angolare, $\log(\abs{T_0-T_1})$ e $-1/\tau$. 
-Dal coefficiente angolare $B$ viene estratta la costante di tempo $\tau=-1/B$. 
+Interpolando la grandezza $\log\abs{T(t)-T_1}$ si hanno come intercetta $A$ e coefficiente angolare $B$:
+\begin{equation*}
+\begin{aligned}
+A &= \log\abs{T_0-T_1}; \\
+B &= -1/\tau.
+\end{aligned}
+\end{equation*}
+
 \begin{Figure}
 \centering
 \includegraphics[width=\textwidth]{selected2_Tfc.eps}
-\captionof{figure}{Fit lineare di $\log(\abs{T(t)-T_1})$. ($T_0<T_1$)}
+\captionof{figure}{Fit lineare di $\log\abs{T(t)-T_1}$, $T_0<T_1$}
 \label{fig:selected_Tfc}
 \end{Figure}
 \begin{Figure}
 \centering
 \includegraphics[width=\textwidth]{selected2_Tcf.eps}
-\captionof{figure}{Fit lineare di $\log(\abs{T(t)-T_1})$. ($T_0>T_1$)}
+\captionof{figure}{Fit lineare di $\log\abs{T(t)-T_1}$, $T_0>T_1$}
 \label{fig:selected_Tcf}
 \end{Figure}
 
-Si rende dunque utile stimare le incertezze sui parametri. Chiamiamo $\sigma_T$ l'incertezza associata alle misure di temperatura che sappiamo essere preponderante rispetto all'incertezza temporale che verrà invece trascurata. Il valore di $T_1$ viene stimato da misure ripetute di una quantità pressoché costante una volta raggiunto il plateaux, di conseguenza l'incertezza ad esso associata sarà $\sigma_T/\sqrt{n}$. L'incertezza associata alla quantità $y(t)$studiata è:\[
-\sigma_{y}=\dfrac{\sqrt{\sigma_T^2+\dfrac{\sigma_T^2}{n}}}{y}
-\]
-Possiamo a questo punto estrarre il valore della costante $\tau$ del termometro:\begin{align*}
-&T_0<T_1 & \tau = -\frac{1}{B} = \SI{2.84\pm0.02}{s}\\[0.3cm]
-&T_0>T_1 & \tau = -\frac{1}{B} = \SI{2.91\pm0.05}{s}
-\end{align*}
+Si stimano dunque le incertezze sui parametri: si definisce $\sigma_T$ l'incertezza associata alle misure di temperatura, preponderante rispetto all'incertezza temporale che verrà invece trascurata. Il valore $T_1$ finale della temperatura viene stimato da misure ripetute del valore circa costante raggiunto a plateaux, di conseguenza l'incertezza ad esso associata sarà $\sigma_T/\sqrt{n}$. L'incertezza associata alla quantità al primo membro della~\ref{eq:lintermometro}, che qui è indicata con $y$, è:
+\begin{equation*}
+\sigma_{y}=\dfrac{\sqrt{\sigma_T^2+\sigma_T^2/n}}{y}
+\end{equation*}
+Possiamo a questo punto estrarre il valore della costante $\tau$ del termometro:
+\begin{equation*}
+\begin{aligned}
+T_0<T_1 \;\;\; \tau &= -\frac{1}{B} = \SI{2.84\pm0.02}{s}\\
+T_0>T_1 \;\;\; \tau &= -\frac{1}{B} = \SI{2.91\pm0.05}{s}
+\end{aligned}
+\end{equation*}
 
-Reinserendo nell'equazione iniziale i parametri ottenuti mediante i fit lineari si ottengono i seguenti andamenti:
+Reinserendo nell'equazione iniziale i parametri ottenuti mediante i fit lineari si ottengono gli andamenti rappresentati in figura~\ref{fig:expected_fc} e~\ref{fig:expected_cf}. Si osserva dunque che i risultati sono compatibili tra loro purché si consideri esclusivamente una parte abbastanza ristretta dei dati ottenuti; è da tener conto, infatti, che il sensore di temperatura utilizzato ha una risposta molto più rapida del termometro a mercurio, dunque si ritiene che prevarrà rapidamente sulla registrazione del dato il rumore digitale intrinsecamente presente nel dispositivo.
+
 \begin{Figure}
 \centering
 \includegraphics[width=\textwidth]{expected_Tfc.eps}
-\captionof{figure}{Andamento teorico ottenuto dal fit. ($T_0<T_1$)}
-\label{fig:expectef_fc}
+\captionof{figure}{Andamento teorico ottenuto dal fit, $T_0<T_1$}
+\label{fig:expected_fc}
 \end{Figure}
 \begin{Figure}
 \centering
 \includegraphics[width=\textwidth]{expected_Tcf.eps}
-\captionof{figure}{Andamento teorico ottenuto dal fit. ($T_0>T_1$)}
+\captionof{figure}{Andamento teorico ottenuto dal fit, $T_0>T_1$}
 \label{fig:expected_cf}
 \end{Figure}
-Si osserva dunque che i risultati sono compatibili tra loro purché si consideri esclusivamente una parte abbastanza ristretta dei dati ottenuti.
-
 
 
 
@@ -240,7 +253,7 @@ PV = \text{cost} \;\;\; \text{\small(\emph{Legge di Boyle})}.
 \end{equation}
 Da tale equazione, dunque, si prevede un andamento lineare del grafico della pressione in funzione del reciproco del volume. Per piccole variazioni di pressione attorno alla pressione atmosferica $P_0 = \SI{1.01e5}{Pa}$, assumendo costante il numero di moli del gas contenuto nel sistema, si può sviluppare in serie l'espressione di $V$:
 \begin{equation*}
-V = \frac{nRT}{P} \sim \frac{nRT}{P_0}\big[2-\frac{P}{P_0}\big]
+V = \frac{nRT}{P} \sim \frac{nRT}{P_0}\bigg[2-\frac{P}{P_0}\bigg]
 \end{equation*}
 \begin{equation}
 \label{eq:boylelin}
@@ -250,7 +263,7 @@ V = \frac{nRT}{P} \sim \frac{nRT}{P_0}\big[2-\frac{P}{P_0}\big]
 \paragraph{Sistema reale}
 Il sistema termodinamico studiato utilizza come gas l'aria, che per variazioni di pressione piccole se comparate alla pressione atmosferica si comporta sostanzialmente seguendo la legge dei gas. Tuttavia è da tener conto del fatto che vi possano essere consistenti perdite di gas nel cilindro, in quanto il pistone, nella sua corsa, non è ermeticamente aderente al cilindro; ulteriore causa di errore è dovuta alla non precisa determinazione del volume inizialmente occupato dal gas: sono infatti presenti dei tubi per collegare il sistema al sensore di bassa pressione e alla camera di espansione, il cui volume non si è in grado di misurare con la medesima accuratezza. Si stima, tuttavia, che esso sia trascurabile rispetto a quello occupato nel cilindro e nella camera di espansione. 
 
-Il volume occupato dal gas nella camera di espansione viene calcolato a partire dalla misura con un calibro ventesimale, utilizzando i becchi interni e la parte terminale, delle dimensioni della stessa; si ottiene 
+Il volume occupato dal gas nella camera di espansione viene calcolato a partire dalla misura, con un calibro ventesimale, utilizzando i becchi interni e la parte terminale, delle dimensioni della stessa; si ottiene 
 \begin{equation*}
 \begin{aligned}
 \phi = \SI{36.45 \pm 0.05}{mm} \;\; \text{\small (diametro)} \\
@@ -301,8 +314,8 @@ L'esperimento è stato condotto nel modo seguente:
 \item Si posiziona il cilindro orizzontalmente, con il pistone all'altezza $h$ discussa precedentemente; si misura volume e pressione iniziale;
 \item Si collega il sensore di bassa pressione da un lato all'interfaccia e dall'altro al cilindro; quindi, si pone quale valore di calibrazione la pressione di \SI{0}{kPa};
 \item Si collega il sensore di posizione all'interfaccia: esso misura le variazioni di posizione del pistone mediante la rotazione di una puleggia, attorno alla quale scorre un filo solidale con il pistone stesso. Si imposta il software in modo che esso restituisca direttamente il valore della variazione di posizione lineare, traducendo da quella angolare della puleggia;
-\item Si esercita fisicamente una pressione lenta e continua sul pistone, al fine di comprimerlo, e si campionano i dati con frequenza di \SI{10}{Hz}.
-\item Si ripete il procedimento portando inizialmente il gas ad una temperatura diversa, mediante la camera di espansione, al fine di verificare la validità della legge anche lungo un'altra isoterma.
+\item Si esercita fisicamente una pressione lenta e continua sul pistone, al fine di comprimerlo, e si acquisiscono i dati mediante i diversi sensori.
+%\item Si ripete il procedimento portando inizialmente il gas ad una temperatura diversa, mediante la camera di espansione, al fine di verificare la validità della legge anche lungo un'altra isoterma.
 \end{enumerate}
 La raccolta dati di posizione, in \SI{}{m}, e temperatura, in \SI{}{\degree C}, è stata effettuata con cinque cifre dopo la virgola, mentre quella della pressione, in \SI{}{kPa}, con due cifre decimali. Si assume pertanto come incertezza sul singolo dato l'ultimo digit diviso per $\sqrt{12}$.
 
@@ -319,6 +332,22 @@ Alla temperatura media di \SI{298.73 \pm 0.02}{K}, calcolata come media dei valo
 \end{equation*}
 e successivamente si è sommato tale valore al valore del volume iniziale $V_0$; allo stesso modo si è operato per la pressione, con $P = P_0 + \Delta P$.
 
+Si è dunque proceduto ad effettuare un fit lineare, ottenendo come coefficiente angolare il valore
+\begin{equation*}
+\bar{m} = \SI{14.87 \pm 0.12}{J};
+\end{equation*}
+ricordando che $\bar{m} = nRT$, con $T$ temperatura media acquisita durante tutto il processo \Big($T = \SI{25.58 \pm 0.02}{\degree C} = \SI{298.73 \pm 0.02}{K}$\Big), si ottiene una prima stima del numero di moli presenti nel sistema:
+\begin{equation}
+\label{eq:nindirprima} 
+n_\text{indir} = \frac{\bar{m}}{RT} = \SI{5.99 \pm 0.05  e-3}{mol},
+\end{equation}
+con incertezza data da
+\begin{equation}
+\label{eq:sigman}
+\sigma_n = n\sqrt{\Big(\frac{\sigma_{m}}{m}\Big)^2 + \Big(\frac{\sigma_{T_0}}{T_0}\Big)^2}.
+\end{equation}
+
+
 \begin{Figure}
 \centering
 \includegraphics[width=\textwidth]{deltaPdeltaV.pdf}
@@ -333,51 +362,54 @@ m  = \SI{-1.209 \pm 0.004 e-9}{m^3 / Pa};
 \end{equation*}
 tale valore è accompagnato da incertezza stimata a partire dal chi quadro: quest'ultimo, in prima analisi, risultava non compatibile con il numero di gradi di libertà, dato dal numero di dati meno due, e di molto maggiore, indice del fatto che le incertezze sulla variazione di volume calcolate per ogni singola acquisizione mediante l'equazione~\ref{eq:sigmaV} fossero di molto sottostimate. Si ritiene che questo sia dovuto alla perdita costante di parte del gas nel sistema sottoposto alla riduzione del suo volume, che non è tenuta in considerazione dall'alta accuratezza scelta nell'acquisizione operata dal sensore. Nel grafico rappresentato, di conseguenza, si sono rappresentate con le barre di errore verticale le incertezze sui valori di $\Delta V$ stimate a partire dal chi quadro; al fine di migliorare la leggibilità, inoltre, si è rappresentato un dato ogni quattro.
 
-Ricordando che $m = - V_0 / P_0$ è possibile stimare dal fit, per mezzo di un metodo indiretto, il numero di moli di gas, supposte idealmente costanti, che hanno preso parte al processo termodinamico; si ha
+Ricordando che $m = - V_0 / P_0$ è possibile stimare dal fit, per mezzo ancora di un metodo indiretto, il numero di moli di gas, supposte idealmente costanti, che hanno preso parte al processo termodinamico; si ha
 \begin{equation*}
 n_\text{indir} = \frac{P_0^2 \vert m \vert}{R T} = \SI{4.97 \pm 0.02 e-3}{mol},
 \end{equation*}
-con incertezza data da 
-\begin{equation*}
-\sigma_n = n\sqrt{\Big(\frac{\sigma_{m}}{m}\Big)^2 + \Big(\frac{\sigma_{T_0}}{T_0}\Big)^2};
-\end{equation*}
-in questo caso, la temperatura $T$ è ottenuta come media di tutti i valori acquisiti dal sensore nel corso dell'intera durata del processo: $T = \SI{25.58 \pm 0.02}{\degree C} = \SI{298.73 \pm 0.02}{K}$. Tale valore, inoltre, giustifica la assunta isotermia del fenomeno considerato.
-Confrontando tale valore con quello teorico calcolato precedentemente (cfr. equazione~\ref{eq:nteor}), si evince che nel corso del processo il numero di moli di gas è diminuito, come era stato previsto dalla considerazione della non perfetta tenuta delle giunture tra i tubi e del pistone stesso nel cilindro.
+con incertezza data dalla~\ref{eq:sigman}; anche in questo caso, la temperatura $T$ è ottenuta come media di tutti i valori acquisiti dal sensore nel corso dell'intera durata del processo. Tale valore, inoltre, giustifica la assunta isotermia del fenomeno considerato.
+
+Confrontando tale valore con quello teorico calcolato precedentemente (cfr. equazione~\ref{eq:nteor}), si evince che nel corso del processo il numero di moli di gas è diminuito, come era stato previsto dalla considerazione della non perfetta tenuta delle giunture tra i tubi e del pistone stesso nel cilindro. 
+
+Al contrario, confrontando questo valore con la prima stima, data dall'equazione~\ref{eq:nindirprima}, si osserva una più alta discrepanza: si ritiene che questo sia dovuto al fatto che la prima stima è maggiormente dipendente dal valore del volume occupato dal gas, in quanto non si occupa unicamente delle variazioni dello stesso come nel secondo caso. Dunque l'incapacità di stimare la quantità di gas presente nei tubi di raccordo tra i sensori, e tra questi e il cilindro e la camera di espansione, così come quella effettivamente presente nella camera di espansione una volta che essa è stata chiusa con il tappo, ha influito maggiormente sulla qualità del dato, che è comunque accettabile come ordine di grandezza e indicativamente prossimo al valore teorico calcolato inizialmente.
 
 
 
 
-
+%LEGGE DI GAY-LUSSAC
 \subsection{Verifica della Legge di Gay-Lussac}
 \label{subsec:Gay-Lussac}
 
+%LEGGE DI CHARLES
 \subsection{Verifica della Legge di Charles}\label{subsec:Charles}
 \paragraph{Modello ideale}Si vuole verificare che per un gas ideale a pressione costante e a moli costanti la variazione di volume è direttamente proporzionale alla variazione di temperatura, ovvero
 \begin{equation}\label{eq:charles}
 	\frac{V}{T} = \text{cost},
 \end{equation} 
-anche nota come \emph{Legge di Charles}. Ricordando poi la \emph{legge di stato di un gas ideale}
-\begin{equation}\label{eq:stato}
-	PV = nRT
-\end{equation} si vede subito che
+anche nota come \emph{Legge di Charles}. Ricordando poi la~\ref{eq:pvnrt}, si vede subito che
 \begin{equation}\label{eq:retta_charles}
-	V = \frac{nR}{P}T,
-\end{equation} avendo quindi nota la pressione del gas durante la trasformazione e la costante $R$ sarà possibile stimare la quantità di moli presenti nel recipiente, in quanto si vorrà interpolare linearmente i dati e ricavare il valore del coefficiente angolare della retta attesa.
-\paragraph{Sistema reale}Nei limiti del nostro esperimento l'aria può essere considerata un gas ideale. La differenza più rilevante tra il modello ideale e il sistema fisico reale sta nella non perfetta tenuta della guarnizione del pistone, ossia nella non conservazione delle moli totali del gas. Tale effetto è ovviamente tanto più marcato quanto più è elevata la pressione del gas, nel nostro esperimento però il gas verrà mantenuto a pressione atmosferica quindi non ci si aspetta un effetto eccessivo.
+	V = \frac{nR}{P}T \rightarrow \Delta V = \frac{nR}{P}\Delta T,
+\end{equation} avendo quindi nota la pressione del gas durante la trasformazione e la costante $R$, sarà possibile stimare la quantità di moli presenti nel recipiente, in quanto si vorrà interpolare linearmente i dati e ricavare il valore del coefficiente angolare della retta attesa.
+\paragraph{Sistema reale}Nei limiti del esperimento condotto, l'aria può essere considerata un gas ideale. La differenza più rilevante tra il modello ideale e il sistema fisico reale sta nella non perfetta tenuta della guarnizione del pistone, ossia nella non conservazione delle moli totali del gas. Tale effetto è ovviamente tanto più marcato quanto più è elevata la pressione del gas, in questo esperimento però il gas verrà mantenuto a pressione atmosferica quindi non ci si aspetta un effetto eccessivo.
 
 Il volume inizialmente occupato dal gas è
-\[
+\begin{equation*}
 	V_0 =\SI{1.167 \pm 0.005 e-4}{m^3},
-\] calcolato nello stesso modo descritto nella verifica della \emph{Legge di Boyle}, dove stavolta l'altezza iniziale del pistone è 
-\[
+\end{equation*} 
+calcolato nello stesso modo descritto nella sezione~\ref{subsec:Boyle}, dove in questo caso l'altezza iniziale del pistone è 
+\begin{equation*}
 	h = \SI{33 \pm 0.05}{mm}.
-\] La temperatura iniziale del gas, presa come media delle prime 10 misure del sensore di temperatura, risulta essere pari a 
-\[
+\end{equation*} 
+La temperatura iniziale del gas, presa come media delle prime 10 misure del sensore di temperatura, risulta essere pari a 
+\begin{equation*}
 	T_0 = \SI{197.18 \pm 0.03}{K},
-\] la stima del numero di moli contenute inizialmente all'interno del sistema è dunque
+\end{equation*} 
+la stima del numero di moli contenute inizialmente all'interno del sistema è dunque
+\small{
 \begin{equation}\label{eq:moli_previste_charles}
 	n_{\text{iniziali}} = \frac{P_0 V_0}{T_0 R} = \SI{4.77 \pm 0.02 e-3}{mol}.
 \end{equation}
+}
+\normalsize
 
 \paragraph{Procedura e presa dati} Si effettua dunque l'esperimento: si porta il gas nel sistema a pressione atmosferica, aprendo e poi chiudendo la valvola tra il sistema e l'ambiente esterno, dunque si immerge la camera non adiabatica del sistema all'interno del calorimetro contenente acqua a temperatura 
 \[
@@ -425,7 +457,7 @@ La massa $m$ subirà un lavoro
 	L_m = m g \Delta h
 \] dove $g$ è l'accelerazione gravitazionale (si assume essere pari a $\SI{9.81}{m/s^2}$) e $\Delta h$ la variazione di quota: tale lavoro sarà interamente generato dal ciclo termodinamico e dovrà quindi essere pari al lavoro effettuato dal gas sull'ambiente, di valore
 \[
-	L_g = \oint_{ABCDA} P V dV
+	L_g = \oint_{ABCDA} P dV
 \] ovvero all'area del grafico del ciclo in un piano di Clapeyron.
 \paragraph{Procedura e presa dati} Si prepara l'apparato così realizzato: 
 \begin{enumerate}
@@ -447,7 +479,7 @@ Si misura preliminarmente il diametro del pistone in modo da poter calcolare la 
 Con una massa pari a 
 \[
 	m = \SI{0.1153 \pm 0.0001}{kg}
-\] e con un'escursione termica trai calorimetri sufficientemente alta (circa $\SI{70}{°}$) si realizza il ciclo termodinamico riportato in figura \ref{fig:ciclo}, gli stati assunti dal gas sono riportati in tabella \ref{tab:ciclo}.
+\] e con un'escursione termica tra i calorimetri sufficientemente alta (circa $\SI{70}{\degree C}$), si realizza il ciclo termodinamico riportato in figura \ref{fig:ciclo}, gli stati assunti dal gas sono riportati in tabella \ref{tab:ciclo}.
 \begin{Figure}
 \centering
 \includegraphics[width=\textwidth]{ciclo.pdf}
@@ -489,13 +521,72 @@ I lati superiore e inferiore della figura realizzata dal ciclo, misurati come la
 	A = \Delta V  \Delta P = \SI{0.01497 \pm 0.0001}{J}.
 \]
 Si vede che $A > L_m$, ovvero si vede che il gas ha generato un lavoro superiore a quello necessario per sollevare la massa: questo è comprensibile se si ricorda che l'apparato strumentale a disposizione non è perfetto, in particolare non è perfetta la guarnizione all'interno del pistone, il che ha causato la perdita di alcune moli di gas durante le trasformazioni. 
-A tal proposito si potrebbe pensare di ridurre tale contributo di errore riducendo la pressione del gas (infatti, a rigor di logica, maggiore è la pressione del gas sulla guarnizione più è elevata la fuoriuscita di moli gassose), eppure successivi esperimenti hanno messo in luce che i risultati migliori si ottengono a masse (e quindi a pressioni applicate) maggiori, infatti per pressioni sufficientemente basse da non causare perdite influenti di moli si andava sotto la risoluzione del misuratore di pressione, falsando dunque i dati.
+A tal proposito si potrebbe pensare di ridurre tale contributo di errore riducendo la pressione del gas (infatti, a rigor di logica, maggiore è la pressione del gas sulla guarnizione più è elevata la fuoriuscita di moli gassose), eppure successivi esperimenti hanno messo in luce che i risultati migliori si ottengono a masse (e quindi a pressioni applicate) maggiori, infatti per pressioni sufficientemente basse da non causare perdite influenti di moli si andava sotto la risoluzione del misuratore di pressione, falsando dunque i dati. Si è infatti ripetuto il medesimo procedimento utilizzando una massa minore, ma si sono ottenuti valori del lavoro termodinamico e meccanico maggiormente discrepanti tra loro, e pertanto non sono riportati.
 
 %==================================================
 %				    CONCLUSIONI
 %==================================================
-\section{Considerazioni finali}
+\section{Considerazioni finali ed Approfondimenti}
+\subsection{Considerazioni finali}
+La prima necessaria considerazione da effettuare è che l'accuratezza dei dati acquisiti dai sensori interfacciati col software \emph{DataStudio} non si riflette sulla precisione dei valori forniti quali stime, per esempio il numero di moli coinvolte nei vari processi studiati, o le costanti di tempo del termometro o, ancora, il lavoro compiuto nel ciclo termodinamico. L'alto numero di cifre significative rese disponibili dalle diverse acquisizioni, infatti, non sempre è indizio di una maggiore precisione della misura, in quanto può essere presente una considerevole quantità di rumore digitale. Gli errori sistematici sempre presenti, come la non idealità del gas utilizzato, la perdita di moli durante i processi termodinamici, la perdita di calore all'interno dei calorimetri non perfettamente adiabatici, così come la caratteristica non quasi-statica delle trasformazioni coinvolte, viziano la qualità dei dati acquisiti, fornendo misure sì accurate ma con una discrepanza non trascurabile dai valori veri.
 
+
+\subsection{Approfondimenti}
+\paragraph{Equivalente in massa del calorimetro}
+Come si era reso necessario al termine della precedente Relazione, si è proceduto al calcolo dell'equivalente in acqua del calorimetro, ossia alla ideale massa d'acqua $M_\text{eq}$ che si suppone responsabile, nel caso in cui fosse posta nel calorimetro insieme agli altri sistemi termodinamici, di tutto il calore assorbito dallo stesso a causa della non perfetta adiabaticità delle sue pareti.
+
+Si è operato nel modo seguente:
+\begin{enumerate}
+\item Si introducono in due calorimetri due masse d'acqua a temperature $T_h$ e $T_c$;
+\item Si pone il calorimetro contenente acqua calda (a temperatura $T_h$) sulla bilancia, si misura la massa $M_h$, e la si tara;
+\item Si forma un imbuto con un foglio di carta e lo si pone sul foro presente nel tappo del calorimetro; per mezzo di esso, si versa l'acqua fredda, a temperatura $T_c$, all'interno del primo calorimetro, e si misura la massa $M_c$ introdotta;
+\item Si attende che il sistema si porti all'equilibrio, ovvero che le due masse d'acqua scambino calore tra loro e raggiungano la stessa temperatura, e si misura la temperatura di equilibrio $T_\text{eq}$. Per agevolare lo scambio termico, si agita moderatamente il calorimetro, considerando trascurabili gli effetti di tale agitazione.
+\end{enumerate}
+
+Dal primo principio della Termodinamica, poiché si assume l'adiabaticità del calorimetro (infatti si misurerà il calore da esso assorbito in termini della massa equivalente, e non è compiuto lavoro, si ottiene
+\begin{equation*}
+\Delta U = \cancelto{0}{Q} - \cancelto{0}{L};
+\end{equation*}
+per l'additività dell'energia interna, si ottiene
+\small{
+\begin{equation*}
+c_\text{$H_2$O}(M_h + M_eq)(T_\text{eq}-T_h) + c_\text{$H_2$O}M_c(T_\text{eq}-T_c) = 0
+\end{equation*}
+}
+\normalsize
+dunque
+\begin{equation*}
+M_\text{eq} = \frac{M_h(T_h-T_\text{eq}) + M_c(T_c-T_\text{eq})}{T_\text{eq}-T_h}.
+\end{equation*}
+I dati raccolti sono riportati in tabella~\ref{tab:equivalmassa}; applicando l'equazione sopra riportata, si ottiene
+\begin{equation*}
+M_\text{eq} = \SI{25.6 \pm 2.5}{g},
+\end{equation*}
+con incertezza calcolata con
+\tiny{
+\begin{equation*}
+\begin{split}
+\sigma_{M_\text{eq}}^2 &= \Bigg[\bigg(\frac{2M_h(T_\text{eq}-T_h)+M_c(T_c-T_\text{eq})}{(T_\text{eq}-T_h)^2}\bigg)^2 \\
+&+\bigg(\frac{M_c(T_\text{eq}-T_h)}{(T_\text{eq}-T_h)^2}\bigg)^2 +\bigg(\frac{M_c(T_\text{eq}-T_h)+M_c(T_c-T_\text{eq})}{(T_\text{eq}-T_h)^2}\bigg)^2\Bigg]\sigma_T^2,
+\end{split}
+\end{equation*}
+}
+\normalsize
+trascurando l'incertezza sulle masse.
+
+\begin{center}
+\captionof{table}{Dati raccolti per il calcolo dell'equivalente in massa del calorimetro}
+\label{tab:equivalmassa}
+\begin{tabular}{cc}
+Grandezza & Valore \\
+\toprule 
+$M_h$ & \SI{308.50 \pm 0.04}{g} \\
+$M_c$ & \SI{202.90 \pm 0.04}{g} \\
+$T_h$ & \SI{51.70 \pm 0.03}{\degree C} \\
+$T_c$ & \SI{16.50 \pm 0.03}{\degree C} \\
+$T_\text{eq}$ & \SI{38.40 \pm 0.03}{\degree C}
+\end{tabular}
+\end{center}
 
 
 \end{multicols}
