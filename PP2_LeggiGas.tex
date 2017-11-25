@@ -8,8 +8,8 @@
 \usepackage{siunitx} %Inserisce automaticamente i dati con le unità  di misura correttamente formattate del SI (utilizzo: \SI{0.82}{m^2}, in generale \SI{misura con il punto decimale}{unità  di misura})
 \sisetup{output-decimal-marker = {.}, separate-uncertainty = true, input-uncertainty-signs = \pm, detect-weight=true, detect-family=true} %per usare SI con il punto decimale
 \usepackage{listings} %Per citare codice informatico formattandolo correttamente
-\usepackage{amsmath}
-\usepackage{graphicx}
+\usepackage{amsmath,amsthm,verbatim,amssymb,amsfonts,amscd, graphicx,mathtools}
+\newcommand{\abs}[1]{\left\lvert\,#1\,\right\rvert}
 \usepackage{geometry}
 \usepackage{epigraph}
 \usepackage{booktabs}	%tabelle migliorate
@@ -132,6 +132,101 @@ I seguenti sensori utilizzati sono interfacciati con il software \emph{DataStudi
 
 \subsection{Costante di tempo del termometro}
 \label{subsec:costante_termometro}
+\paragraph{Modello fisico ideale}
+Un termometro ideale alla temperatura d'equilibrio $T_0$,  immerso in un ambiente alla temperatura $T_1$  risponde in modo esponenziale secondo l'equazione:\begin{equation}
+T(t) = T_1 - (T_1-T_0)\,\,e^{-t/\tau}
+\end{equation}
+Osserviamo che:\begin{itemize}
+\item Se $T_0>T_1$ l'andamento della temperatura è decrescente e tende a $T_1$ (figura \ref{fig:TCF});
+\item Se  $T_0<T_1$ l'andamento della temperatura è crescente e tende a $T_1$ (figura \ref{fig:TFC})
+\end{itemize}
+In entrambi i casi la temperatura è descritta da una funzione monotona. Operando una semplice manipolazione dell'equazione precedente:\begin{equation}\label{eqn:term}
+T(t)-T_1 = (T_0-T_1)\,\,e^{-t/\tau}
+\end{equation}
+appare chiaro che in entrambi i casi l'andamento della quantità $T(t) - T_1$ è decrescente.
+
+\begin{Figure}
+\centering
+\includegraphics[width=\textwidth]{T_fc.eps}
+\captionof{figure}{Andamento della temperatura in funzione del tempo. ($T_0<T_1$)}
+\label{fig:TFC}
+\end{Figure}
+\begin{Figure}
+\centering
+\includegraphics[width=\textwidth]{T_cf}
+\captionof{figure}{Andamento della temperatura in funzione del tempo. ($T_0>T_1$)}
+\label{fig:TCF}
+\end{Figure}
+
+\paragraph{Sistema reale}
+Il sistema utilizzato è costituito da due calorimetri, ed un termometro. I due calorimetri contengono acqua a temperature rispettivamente $T_0$ e $T_1$. Il termometro è incastrato all'interno di una camera d'espansione contenete aria; le variazioni da esso registrate sono le variazioni di temperatura dell'aria, originate da conduzione di calore tra i due sistemi termodinamici considerati (acqua e camera).\\
+In particolare osserviamo che, passando da una temperatura d'equilibrio $T_0$ ad una temperatura $T_1$, nel caso in cui $T_0<T_1$ è l'acqua, calda, che cedendo calore riscalda la camera e l'aria in essa contenuta, nel caso in cui $T_0>T_1$ invece è la camera che, raffreddandosi, cede calore all'acqua.\\
+I due casi verranno analizzati separatamente.
+
+\paragraph{Procedura e presa dati}
+La presa dati dell'esperimento risulta abbastanza banale, si è proceduto nel modo seguente:
+\begin{enumerate}
+\item Viene configurato il termometro su Data-Studio e scaldata l'acqua contenuta in uno dei due calorimetri mediante la resistenza elettrica. Nel frattempo la camera d'espansione con il termometro vengono messi all'interno del calorimetro freddo per raggiungere l'equilibrio.
+\item Viene rapidamente spostata la camera dal calorimetro freddo in quello caldo, misurando la risposta del termometro.
+\item Una volta verificato che il termometro fosse arrivato a plateaux esso viene spostato nuovamente nella camera fredda, acquisendo così il secondo set di dati.
+\end{enumerate} 
+
+Si procede dunque all'elaborazione dei dati mediante \texttt{Python} eliminando transienti iniziali e regioni caotiche finali. Si passa poi alla linearizzazione delle equazioni in modo da poter successivamente procedere ad un'interpolazione lineare. Passando al logaritmo l'equazione \ref{eqn:term} diventa:\begin{equation}
+\log(\abs{T(t)-T_1})=\log(\abs{T_0-T_1})-\dfrac{1}{\tau}t
+\end{equation}
+Dove il valore assoluto viene usato per non violare il dominio della funzione logaritmica. Ci si aspetta dunque che la grandezza $y(t)=\log(\abs{T(t)-T_1})$ abbia un andamento all'incirca lineare. Quello che si osserva dalle figure \ref{fig:selected_Tfc} e \ref{fig:selected_Tcf} è che la regione di linearità è limitata ai primi 10-15 secondi. Si ci limita dunque all'interpolazione dei primi $1000-1500$ dati evidenziati in blu nelle figure.  
+\begin{Figure}
+\centering
+\includegraphics[width=\textwidth]{selected_Tfc.eps}
+\captionof{figure}{Linearizzazione della temperatura in funzione del tempo. ($T_0<T_1$)}
+\label{fig:selected_Tfc}
+\end{Figure}
+\begin{Figure}
+\centering
+\includegraphics[width=\textwidth]{selected_Tcf.eps}
+\captionof{figure}{Linearizzazione della temperatura in funzione del tempo. ($T_0>T_1$)}
+\label{fig:selected_Tcf}
+\end{Figure}
+
+Interpolando la grandezza $\log(\abs{T(t)-T_1})$ si hanno come parametri $A$ e $B$, intercetta e coefficiente angolare, $\log(\abs{T_0-T_1})$ e $-1/\tau$. 
+Dal coefficiente angolare $B$ viene estratta la costante di tempo $\tau=-1/B$. 
+\begin{Figure}
+\centering
+\includegraphics[width=\textwidth]{selected2_Tfc.eps}
+\captionof{figure}{Fit lineare di $\log(\abs{T(t)-T_1})$. ($T_0<T_1$)}
+\label{fig:selected_Tfc}
+\end{Figure}
+\begin{Figure}
+\centering
+\includegraphics[width=\textwidth]{selected2_Tcf.eps}
+\captionof{figure}{Fit lineare di $\log(\abs{T(t)-T_1})$. ($T_0>T_1$)}
+\label{fig:selected_Tcf}
+\end{Figure}
+
+Si rende dunque utile stimare le incertezze sui parametri. Chiamiamo $\sigma_T$ l'incertezza associata alle misure di temperatura che sappiamo essere preponderante rispetto all'incertezza temporale che verrà invece trascurata. Il valore di $T_1$ viene stimato da misure ripetute di una quantità pressoché costante una volta raggiunto il plateaux, di conseguenza l'incertezza ad esso associata sarà $\sigma_T/\sqrt{n}$. L'incertezza associata alla quantità $y(t)$studiata è:\[
+\sigma_{y}=\dfrac{\sqrt{\sigma_T^2+\dfrac{\sigma_T^2}{n}}}{y}
+\]
+Possiamo a questo punto estrarre il valore della costante $\tau$ del termometro:\begin{align*}
+&T_0<T_1 & \tau = -\frac{1}{B} = \SI{2.84\pm0.02}{s}\\[0.3cm]
+&T_0>T_1 & \tau = -\frac{1}{B} = \SI{2.91\pm0.05}{s}
+\end{align*}
+
+Reinserendo nell'equazione iniziale i parametri ottenuti mediante i fit lineari si ottengono i seguenti andamenti:
+\begin{Figure}
+\centering
+\includegraphics[width=\textwidth]{expected_Tfc.eps}
+\captionof{figure}{Andamento teorico ottenuto dal fit. ($T_0<T_1$)}
+\label{fig:expectef_fc}
+\end{Figure}
+\begin{Figure}
+\centering
+\includegraphics[width=\textwidth]{expected_Tcf.eps}
+\captionof{figure}{Andamento teorico ottenuto dal fit. ($T_0>T_1$)}
+\label{fig:expected_cf}
+\end{Figure}
+Si osserva dunque che i risultati sono compatibili tra loro purché si consideri esclusivamente una parte abbastanza ristretta dei dati ottenuti.
+
+
 
 
 % LEGGE DI BOYLE
