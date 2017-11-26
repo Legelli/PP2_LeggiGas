@@ -388,7 +388,7 @@ dove $\alpha$ è il coefficiente di espansione volumica del gas. Manipolando l'eq
 Ricordando poi l'equazione \ref{eq:pvnrt}, si vede subito che\begin{equation}\label{eq:retta_gay}
 P = \frac{nR}{V}T\rightarrow \Delta P = \frac{nR}{V} \Delta T
 \end{equation}
-Avendo ricavato da misure dirette il volume del recipiente contenente il gas, e conoscendo la costante $R$ dei gas, è possibile mediante interpolazione lineare ricavare il numero di moli di gas utilizzate nell'esperimento.
+Avendo ricavato da misure dirette il volume del recipiente contenente il gas, e conoscendo la costante $R$, è possibile mediante interpolazione lineare ricavare il numero di moli di gas utilizzate.
 
 \paragraph{Sistema reale}
 L'aria, nei limiti dell'esperimento, viene trattata alla pari di un gas ideale; quest'approssimazione è valida in condizioni di bassa pressione e di volumi considerevoli. Il gas studiato è interamente contenuto nella camera d'espansione il cui tappo di gomma garantisce una tenuta stabile. Tale camera è collegata al sensore di bassa pressione mediante un tubo di gomma il cui volume e contenuto gassoso vengono trascurati.\\\\
@@ -401,11 +401,11 @@ T_0 = \SI{294.19\pm0.03}{K}\\[0.3cm]
 Facendo uso dell'equazione di stato dei gas perfetti, si ricava il numero di moli inizialmente contenute nella camera\[
 n_{\text{iniziali}} = \frac{P_0V_0}{RT_0} = \SI{3.80\pm0.02 e-3}{mol}
 \]
-L'errore $\sigma$ assegnato a tele grandezza è stato ricavato dalla seguente equazione\[
+L'errore $\sigma$ assegnato a tele grandezza è stato ricavato con la seguente equazione\[
 \sigma= \sqrt{\left(\frac{V}{RT}\sigma_P\right)^2 + \left(\frac{P}{RT}\sigma_V\right)^2 + \left(\frac{PV}{RT^2}\sigma_T\right)^2}
 \]
 dove con $\sigma_P$, $\sigma_V$, $\sigma_T$ si sono indicate rispettivamente le incertezze sulla pressione, volume e temperatura. 
-Nonostante l'incertezza molto piccola, dovuta alla divisione per $R$, si osserva che il valore misurato sperimentalmente potrebbe differire da quello teorico per effetto del volume del tubo e delle moli di gas in esso presenti.\\
+Nonostante l'incertezza molto piccola, dovuta alla divisione per $R$, si osserva subito che una possibile causa di discrepanza tra il valore teorizzato e quello che si misurerà in seguito potrebbe essere l'effetto non trascurabile del gas presente nel tubo.
 
 \paragraph{Procedura e presa dati} 
 L'esperimento è stato condotto nel modo seguente:\begin{enumerate}
@@ -423,7 +423,7 @@ Dai dati raccolti viene eliminato il trasiente iniziale e sottratto il primo dat
 \label{fig:gay}
 \end{Figure}
 
-L'equazione \ref{eq:retta_gay} mostra come l'intercetta $A$ del fit, riportato in fugura \ref{fig:gay_fit}, debba essere circa nulla, mentre il coefficiente angolare $B$ proporzionale al numero di moli di gas presenti nella camera.
+L'equazione \ref{eq:retta_gay} mostra come l'intercetta $A$ del fit, riportato in fugura \ref{fig:gay_fit}, debba essere circa zero, mentre il coefficiente angolare $B$ proporzionale al numero di moli di gas presenti nella camera.
 Si sono ottenuti i seguenti valori \begin{align*}
 & A = 0.0821 \pm 0.0007
 & B = 0.4355 \pm 0.0001
@@ -442,7 +442,7 @@ Le incertezze su tali stime sono state ottenute mediante l'equazione:\begin{equa
 \label{fig:gay_fit}
 \end{Figure}
 
-A questo punto è possibile estrapolare il numero di moli empiricamente presenti nella camera\[
+A questo punto viene estratto il numero di moli presenti nella camera\[
 n_{\text{misura}} =\frac{BV}{R}=\SI{4.60 \pm 0.02 e-3}{mol}  
 \]
 L'incertezza su tale misura è stata ottenuta dalla seguente equazione\[
@@ -451,7 +451,7 @@ L'incertezza su tale misura è stata ottenuta dalla seguente equazione\[
 
 Appare ora evidente la presenza di una discreta discrepanza tra il valore teorizzato e quello ricavato empiricamente. Tale discrepanza si suppone derivare da due fattori d'errore principali:\begin{itemize}
 \item Un comportamento non completamente perfetto del gas;
-\item Una sottostima iniziale del numero di moli teoricamente presente, il gas presente nel tubo, inizialmente trascurato, evidentemente ricopre un ruolo non indifferente nell'esperimento;
+\item Una sottostima iniziale del numero di moli presenti: il gas presente nel tubo, inizialmente trascurato, evidentemente ricopre nell'esperimento un ruolo più importante di quanto ci si aspettava;
 \end{itemize}
  
 
