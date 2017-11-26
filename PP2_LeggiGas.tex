@@ -170,7 +170,7 @@ Si è proceduto nel modo seguente:
 \begin{enumerate}
 \item Si è configurato il termometro su \emph{DataStudio} e si è scaldata l'acqua contenuta in uno dei due calorimetri mediante la resistenza elettrica. Nel frattempo il sensore di temperatura è stato posto all'interno del calorimetro freddo e lasciato raggiungere l'equilibrio;
 \item Si è rapidamente spostata la camera dal calorimetro freddo in quello caldo, misurando la risposta del termometro.
-\item Una volta verificato che i valori acquisiti dal termometro siano arrivato a plateaux, lo si sposta nuovamente nel calorimetro freddo, acquisendo così il secondo set di dati.
+\item Una volta verificato che i valori acquisiti dal termometro siano arrivati a plateaux, lo si sposta nuovamente nel calorimetro freddo, acquisendo così il secondo set di dati.
 \end{enumerate} 
 
 Si procede dunque all'elaborazione dei dati mediante \texttt{Python} eliminando transienti iniziali e regioni non lineari finali. Si passa poi alla linearizzazione delle equazioni in modo da poter successivamente procedere ad un'interpolazione lineare. Applicando il logaritmo, l'equazione \ref{eqn:term} diventa:
@@ -192,7 +192,7 @@ Dove il valore assoluto viene usato per non violare il dominio della funzione lo
 \label{fig:selected_Tcf}
 \end{Figure}
 
-Interpolando la grandezza $\log\abs{T(t)-T_1}$ si hanno come intercetta $A$ e coefficiente angolare $B$:
+Interpolando la grandezza $\log\abs{T(t)-T_1}$ si hanno come intercetta $A$ e come coefficiente angolare $B$:
 \begin{equation*}
 \begin{aligned}
 A &= \log\abs{T_0-T_1}; \\
@@ -225,7 +225,7 @@ T_0>T_1 \;\;\; \tau &= -\frac{1}{B} = \SI{2.91\pm0.05}{s}
 \end{aligned}
 \end{equation*}
 
-Reinserendo nell'equazione iniziale i parametri ottenuti mediante i fit lineari si ottengono gli andamenti rappresentati in figura~\ref{fig:expected_fc} e~\ref{fig:expected_cf}. Si osserva dunque che i risultati sono compatibili tra loro purché si consideri esclusivamente una parte abbastanza ristretta dei dati ottenuti; è da tener conto, infatti, che il sensore di temperatura utilizzato ha una risposta molto più rapida del termometro a mercurio, dunque si ritiene che prevarrà rapidamente sulla registrazione del dato il rumore digitale intrinsecamente presente nel dispositivo.
+Reinserendo nell'equazione iniziale i parametri ottenuti mediante i fit lineari si ottengono gli andamenti rappresentati in figura~\ref{fig:expected_fc} e~\ref{fig:expected_cf}. Si osserva dunque che i risultati sono compatibili tra loro purché si consideri nell'interpolazione esclusivamente una parte abbastanza ristretta dei dati ottenuti; è da tener conto, infatti, che il sensore di temperatura utilizzato ha una risposta molto più rapida del termometro a mercurio, dunque si ritiene che prevarrà rapidamente sulla registrazione del dato il rumore digitale intrinsecamente presente nel dispositivo.
 
 \begin{Figure}
 \centering
@@ -260,7 +260,7 @@ V = \frac{nRT}{P} \sim \frac{nRT}{P_0}\bigg[2-\frac{P}{P_0}\bigg]
 \rightarrow \Delta V = - \frac{V_0}{P_0} \Delta P.
 \end{equation}
 
-\paragraph{Sistema reale}
+\paragraph{Sistema reale}\label{par:Boyle}
 Il sistema termodinamico studiato utilizza come gas l'aria, che per variazioni di pressione piccole se comparate alla pressione atmosferica si comporta sostanzialmente seguendo la legge dei gas. Tuttavia è da tener conto del fatto che vi possano essere consistenti perdite di gas nel cilindro, in quanto il pistone, nella sua corsa, non è ermeticamente aderente al cilindro; ulteriore causa di errore è dovuta alla non precisa determinazione del volume inizialmente occupato dal gas: sono infatti presenti dei tubi per collegare il sistema al sensore di bassa pressione e alla camera di espansione, il cui volume non si è in grado di misurare con la medesima accuratezza. Si stima, tuttavia, che esso sia trascurabile rispetto a quello occupato nel cilindro e nella camera di espansione. 
 
 Il volume occupato dal gas nella camera di espansione viene calcolato a partire dalla misura, con un calibro ventesimale, utilizzando i becchi interni e la parte terminale, delle dimensioni della stessa; si ottiene 
@@ -378,6 +378,82 @@ Al contrario, confrontando questo valore con la prima stima, data dall'equazione
 %LEGGE DI GAY-LUSSAC
 \subsection{Verifica della Legge di Gay-Lussac}
 \label{subsec:Gay-Lussac}
+\paragraph{Modello ideale}
+Si vuole verificare la dipendenza lineare tra le variazioni di temperatura e di pressione in una trasformazione isocora. La legge di Gay-Lussac descrive il comportamento di un gas ideale sottoposto ad una trasformazione quasi-statica, a volume costante, secondo la legge \begin{equation}
+P = P_0\,\alpha\,T
+\end{equation}
+dove $\alpha$ è il coefficiente di espansione volumica del gas. Manipolando l'equazione si ci può ricondurre alla forma tradizionale \begin{equation}
+\frac{P}{T}=\text{cost}
+\end{equation} 
+Ricordando poi l'equazione \ref{eq:pvnrt}, si vede subito che\begin{equation}\label{eq:retta_gay}
+P = \frac{nR}{V}T\rightarrow \Delta P = \frac{nR}{V} \Delta T
+\end{equation}
+Avendo ricavato da misure dirette il volume del recipiente contenente il gas, e conoscendo la costante $R$ dei gas, è possibile mediante interpolazione lineare ricavare il numero di moli di gas utilizzate nell'esperimento.
+
+\paragraph{Sistema reale}
+L'aria, nei limiti dell'esperimento, viene trattata alla pari di un gas ideale; quest'approssimazione è valida in condizioni di bassa pressione e di volumi considerevoli. Il gas studiato è interamente contenuto nella camera d'espansione il cui tappo di gomma garantisce una tenuta stabile. Tale camera è collegata al sensore di bassa pressione mediante un tubo di gomma il cui volume e contenuto gassoso vengono trascurati.\\\\
+Il volume della camera, costante durante nel corso dell'esperimento, è quello stimato nel paragrafo \ref{par:Boyle}\[
+V_\text{camera} = \SI{8.93 \pm 0.03 e-5}{m^3}
+\]
+Essendo il sistema in equilibrio con l'esterno, la pressione iniziale è quella atmosferica $P_0$, la temperatura iniziale viene invece stimata mediando sui primi $10$ dati raccolti dal sensore di temperatura\[
+T_0 = \SI{294.19\pm0.03}{K}\\[0.3cm]
+\]
+Facendo uso dell'equazione di stato dei gas perfetti, si ricava il numero di moli inizialmente contenute nella camera\[
+n_{\text{iniziali}} = \frac{P_0V_0}{RT_0} = \SI{3.80\pm0.02 e-3}{mol}
+\]
+L'errore $\sigma$ assegnato a tele grandezza è stato ricavato dalla seguente equazione\[
+\sigma= \sqrt{\left(\frac{V}{RT}\sigma_P\right)^2 + \left(\frac{P}{RT}\sigma_V\right)^2 + \left(\frac{PV}{RT^2}\sigma_T\right)^2}
+\]
+dove con $\sigma_P$, $\sigma_V$, $\sigma_T$ si sono indicate rispettivamente le incertezze sulla pressione, volume e temperatura. 
+Nonostante l'incertezza molto piccola, dovuta alla divisione per $R$, si osserva che il valore misurato sperimentalmente potrebbe differire da quello teorico per effetto del volume del tubo e delle moli di gas in esso presenti.\\
+
+\paragraph{Procedura e presa dati} 
+L'esperimento è stato condotto nel modo seguente:\begin{enumerate}
+\item Si prepara l'apparato di misura inserendo il termometro nella camera d'espansione e collegando quest'ultima al sensore di bassa pressione. La camera viene quindi immersa nel termos dove è lasciata termalizzare fino al raggiungimento di condizioni di pressione e temperatura costanti.
+\item Facendo uso della resistenza viene scaldata l'acqua registrando le conseguenti variazioni di temperatura e pressione del gas con una frequenza di $\SI{10}{Hz}$.
+\item Quindi, atteso un tempo sufficientemente lungo da permettere di visualizzare chiaramente l'andamento lineare delle quantità osservate, si estraggono i dati per una successiva analisi.
+\end{enumerate}
+
+Dai dati raccolti viene eliminato il trasiente iniziale e sottratto il primo dato utile in modo da lavorare su variazioni di pressione e temperatura il cui andamento temporale è equivalente a quello dei dati originali. Superato il transiente iniziale, l'andamento delle quantità studiate, riportato in figura \ref{fig:gay}, risulta essere perfettamente lineare.
+
+\begin{Figure}
+\centering
+\includegraphics[width=\textwidth]{gay.eps}
+\captionof{figure}{Andamento della variazione di pressione in funzione della variazione di temperatura a volume costante.}
+\label{fig:gay}
+\end{Figure}
+
+L'equazione \ref{eq:retta_gay} mostra come l'intercetta $A$ del fit, riportato in fugura \ref{fig:gay_fit}, debba essere circa nulla, mentre il coefficiente angolare $B$ proporzionale al numero di moli di gas presenti nella camera.
+Si sono ottenuti i seguenti valori \begin{align*}
+& A = 0.0821 \pm 0.0007
+& B = 0.4355 \pm 0.0001
+\end{align*}
+Le incertezze su tali stime sono state ottenute mediante l'equazione:\begin{equation}
+\sigma_B = \frac{1}{(\langle \Delta T^2\rangle-\langle\Delta T\rangle^2)\sum_i\frac{1}{\sigma_P}}
+\end{equation}
+\begin{equation}
+\sigma_A = \frac{\langle \Delta T^2\rangle}{\sigma_B}
+\end{equation}
+
+\begin{Figure}
+\centering
+\includegraphics[width=\textwidth]{gay_fit.eps}
+\captionof{figure}{Regressione lineare della variazione di pressione in funzione della variazione di temperatura.}
+\label{fig:gay_fit}
+\end{Figure}
+
+A questo punto è possibile estrapolare il numero di moli empiricamente presenti nella camera\[
+n_{\text{misura}} =\frac{BV}{R}=\SI{4.60 \pm 0.02 e-3}{mol}  
+\]
+L'incertezza su tale misura è stata ottenuta dalla seguente equazione\[
+\sigma_n= \sqrt{\left(\frac{V}{R}\sigma_B\right)^2 + \left(\frac{B}{R}\sigma_V\right)^2}
+\]
+
+Appare ora evidente la presenza di una discreta discrepanza tra il valore teorizzato e quello ricavato empiricamente. Tale discrepanza si suppone derivare da due fattori d'errore principali:\begin{itemize}
+\item Un comportamento non completamente perfetto del gas;
+\item Una sottostima iniziale del numero di moli teoricamente presente, il gas presente nel tubo, inizialmente trascurato, evidentemente ricopre un ruolo non indifferente nell'esperimento;
+\end{itemize}
+ 
 
 %LEGGE DI CHARLES
 \subsection{Verifica della Legge di Charles}\label{subsec:Charles}
@@ -543,7 +619,7 @@ Si è operato nel modo seguente:
 \item Si attende che il sistema si porti all'equilibrio, ovvero che le due masse d'acqua scambino calore tra loro e raggiungano la stessa temperatura, e si misura la temperatura di equilibrio $T_\text{eq}$. Per agevolare lo scambio termico, si agita moderatamente il calorimetro, considerando trascurabili gli effetti di tale agitazione.
 \end{enumerate}
 
-Dal primo principio della Termodinamica, poiché si assume l'adiabaticità del calorimetro (infatti si misurerà il calore da esso assorbito in termini della massa equivalente, e non è compiuto lavoro, si ottiene
+Dal primo principio della Termodinamica, poiché si assume l'adiabaticità del calorimetro (infatti si misurerà il calore da esso assorbito in termini della massa equivalente) non viene ceduto calore e non viene compiuto lavoro, si ottiene
 \begin{equation*}
 \Delta U = \cancelto{0}{Q} - \cancelto{0}{L};
 \end{equation*}
