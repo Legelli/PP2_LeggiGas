@@ -428,12 +428,6 @@ Si sono ottenuti i seguenti valori \begin{align*}
 & A = 0.0821 \pm 0.0007
 & B = 0.4355 \pm 0.0001
 \end{align*}
-Le incertezze su tali stime sono state ottenute mediante l'equazione:\begin{equation}
-\sigma_B = \frac{1}{(\langle \Delta T^2\rangle-\langle\Delta T\rangle^2)\sum_i\frac{1}{\sigma_P}}
-\end{equation}
-\begin{equation}
-\sigma_A = \frac{\langle \Delta T^2\rangle}{\sigma_B}
-\end{equation}
 
 \begin{Figure}
 \centering
@@ -441,6 +435,14 @@ Le incertezze su tali stime sono state ottenute mediante l'equazione:\begin{equa
 \captionof{figure}{Regressione lineare della variazione di pressione in funzione della variazione di temperatura.}
 \label{fig:gay_fit}
 \end{Figure}
+
+Le incertezze che accompagnano tali stime sono state trovate a partire dal chi quadro il quale, in prima analisi, risultava non compatibile con il numero di gradi di libertà del sistema, dato dal numero di dati meno due, indice del fatto che le incertezze sulla variazione di pressione fossero di molto sotto-stimate. Stimate le nuove incertezze, gli errori sui parametri del fit vengono ricavati dall'equazione:\begin{equation}
+\sigma_B = \frac{1}{(\langle \Delta T^2\rangle-\langle\Delta T\rangle^2)\sum_i\frac{1}{\sigma_P}}
+\end{equation}
+\begin{equation}
+\sigma_A = \frac{\langle \Delta T^2\rangle}{\sigma_B}
+\end{equation}
+
 
 A questo punto viene estratto il numero di moli presenti nella camera\[
 n_{\text{misura}} =\frac{BV}{R}=\SI{4.60 \pm 0.02 e-3}{mol}  
@@ -604,7 +606,8 @@ A tal proposito si potrebbe pensare di ridurre tale contributo di errore riducen
 %==================================================
 \section{Considerazioni finali ed Approfondimenti}
 \subsection{Considerazioni finali}
-La prima necessaria considerazione da effettuare è che l'accuratezza dei dati acquisiti dai sensori interfacciati col software \emph{DataStudio} non si riflette sulla precisione dei valori forniti quali stime, per esempio il numero di moli coinvolte nei vari processi studiati, o le costanti di tempo del termometro o, ancora, il lavoro compiuto nel ciclo termodinamico. L'alto numero di cifre significative rese disponibili dalle diverse acquisizioni, infatti, non sempre è indizio di una maggiore precisione della misura, in quanto può essere presente una considerevole quantità di rumore digitale. Gli errori sistematici sempre presenti, come la non idealità del gas utilizzato, la perdita di moli durante i processi termodinamici, la perdita di calore all'interno dei calorimetri non perfettamente adiabatici, così come la caratteristica non quasi-statica delle trasformazioni coinvolte, viziano la qualità dei dati acquisiti, fornendo misure sì accurate ma con una discrepanza non trascurabile dai valori veri.
+La prima necessaria considerazione da effettuare è che l'accuratezza dei dati acquisiti dai sensori interfacciati col software \emph{DataStudio} non si riflette sulla precisione dei valori forniti quali stime, per esempio il numero di moli coinvolte nei vari processi studiati, o le costanti di tempo del termometro o, ancora, il lavoro compiuto nel ciclo termodinamico. L'alto numero di cifre significative rese disponibili dalle diverse acquisizioni, infatti, non sempre è indizio di una maggiore precisione della misura, in quanto può essere presente una considerevole quantità di rumore digitale. Gli errori sistematici sempre presenti, come la non idealità del gas utilizzato, la perdita di moli durante i processi termodinamici, la perdita di calore all'interno dei calorimetri non perfettamente adiabatici, così come la caratteristica non quasi-statica delle trasformazioni coinvolte, viziano la qualità dei dati acquisiti, fornendo misure sì accurate ma con una discrepanza non trascurabile dai valori veri. A posteriori si osserva che l'assunzione fatta sulla trascurabilità del volume dei tubi, e delle moli di gas in essi presenti, potrebbe non essere del tutto adeguata.  Essa è una probabile fonte di discrepanze tra il numero di moli teorizzato, che da tale assunzione dipende solo in termini di volume, ed il numero di moli estrapolato dalle misure sulle quali l'assunzione fatta ha effetti decisamente più significativi. 
+
 
 
 \subsection{Approfondimenti}
