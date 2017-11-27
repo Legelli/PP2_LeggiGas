@@ -200,17 +200,19 @@ B &= -1/\tau.
 \end{aligned}
 \end{equation*}
 
+Vengono riportati nelle figure \ref{fig:fit} e \ref{fig:fit2} le rette interpolatrici con sovrapposti i dati sperimentali, per motivi di leggibilità uno ogni 100.
+
 \begin{Figure}
 \centering
 \includegraphics[width=\textwidth]{selected2_Tfc.eps}
 \captionof{figure}{Fit lineare di $\log\abs{T(t)-T_1}$, $T_0<T_1$}
-\label{fig:selected_Tfc}
+\label{fig:fit}
 \end{Figure}
 \begin{Figure}
 \centering
 \includegraphics[width=\textwidth]{selected2_Tcf.eps}
 \captionof{figure}{Fit lineare di $\log\abs{T(t)-T_1}$, $T_0>T_1$}
-\label{fig:selected_Tcf}
+\label{fig:fit2}
 \end{Figure}
 
 Si stimano dunque le incertezze sui parametri: si definisce $\sigma_T$ l'incertezza associata alle misure di temperatura, preponderante rispetto all'incertezza temporale che verrà invece trascurata. Il valore $T_1$ finale della temperatura viene stimato da misure ripetute del valore circa costante raggiunto a plateaux, di conseguenza l'incertezza ad esso associata sarà $\sigma_T/\sqrt{n}$. L'incertezza associata alla quantità al primo membro della~\ref{eq:lintermometro}, che qui è indicata con $y$, è:
@@ -225,7 +227,7 @@ T_0>T_1 \;\;\; \tau &= -\frac{1}{B} = \SI{2.91\pm0.05}{s}
 \end{aligned}
 \end{equation*}
 
-Reinserendo nell'equazione iniziale i parametri ottenuti mediante i fit lineari si ottengono gli andamenti rappresentati in figura~\ref{fig:expected_fc} e~\ref{fig:expected_cf}. Si osserva dunque che i risultati sono compatibili tra loro purché si consideri nell'interpolazione esclusivamente una parte abbastanza ristretta dei dati ottenuti; è da tener conto, infatti, che il sensore di temperatura utilizzato ha una risposta molto più rapida del termometro a mercurio, dunque si ritiene che prevarrà rapidamente sulla registrazione del dato il rumore digitale intrinsecamente presente nel dispositivo.
+Reinserendo nell'equazione iniziale i parametri ottenuti mediante i fit lineari si ottengono gli andamenti rappresentati in figura~\ref{fig:expected_fc} e~\ref{fig:expected_cf}; anche in questo caso viene mostrato solo un campione dei dati sperimentali per motivi grafici. Si osserva dunque che i risultati sono compatibili tra loro purché si consideri nell'interpolazione esclusivamente una parte abbastanza ristretta dei dati ottenuti; è da tener conto, infatti, che il sensore di temperatura utilizzato ha una risposta molto più rapida del termometro a mercurio, dunque si ritiene che prevarrà rapidamente sulla registrazione del dato il rumore digitale intrinsecamente presente nel dispositivo.
 
 \begin{Figure}
 \centering
@@ -581,7 +583,7 @@ Dai dati si vede che la temperatura non è coerente con le aspettative: nella tra
 \end{tabular}
 \end{center}
 
-È necessario avere uno scarto termico elevato per poter riscaldare il gas in un tempo sufficientemente breve da poter rendere trascurabili le perdite di moli attraverso la guarnizione del pistone: per lo stesso scopo si è cercato di essere il più rapidi possibile tra la prima e la seconda trasformazione.
+È necessario avere uno scarto termico elevato per poter riscaldare il gas in un tempo sufficientemente breve da poter rendere trascurabili le perdite di moli attraverso la guarnizione del pistone: a tal fine si è cercato di essere il più rapidi possibile tra la prima e la seconda trasformazione.
 
 La massa $m$ è stata sollevata di una quota 
 \[
@@ -608,7 +610,7 @@ A tal proposito si potrebbe pensare di ridurre tale contributo di errore riducen
 \subsection{Considerazioni finali}
 La prima necessaria considerazione da effettuare è che l'accuratezza dei dati acquisiti dai sensori interfacciati col software \emph{DataStudio} non si riflette sulla precisione dei valori forniti quali stime, per esempio il numero di moli coinvolte nei vari processi studiati, o le costanti di tempo del termometro o, ancora, il lavoro compiuto nel ciclo termodinamico. L'alto numero di cifre significative rese disponibili dalle diverse acquisizioni, infatti, non sempre è indizio di una maggiore precisione della misura, in quanto può essere presente una considerevole quantità di rumore digitale. Gli errori sistematici sempre presenti, come la non idealità del gas utilizzato, la perdita di moli durante i processi termodinamici, la perdita di calore all'interno dei calorimetri non perfettamente adiabatici, così come la caratteristica non quasi-statica delle trasformazioni coinvolte, viziano la qualità dei dati acquisiti, fornendo misure sì accurate ma con una discrepanza non trascurabile dai valori veri. A posteriori si osserva che l'assunzione fatta sulla trascurabilità del volume dei tubi, e delle moli di gas in essi presenti, potrebbe non essere del tutto adeguata.  Essa è una probabile fonte di discrepanze tra il numero di moli teorizzato, che da tale assunzione dipende solo in termini di volume, ed il numero di moli estrapolato dalle misure sulle quali l'assunzione fatta ha effetti decisamente più significativi. 
 
-È tuttavia considerevole l'adattamento dei dati sperimentali agli andamenti previsti dalla equazione dei gas perfetti, che porta a concludere che l'aria, a pressione atmosferica, possa in effetti essere studiata con buona approssimazione considerandola quale gas ideale. La scelta inoltre di operare sulle variazioni delle variabili termodinamiche, piuttosto che sui lori valori assoluti, ha reso possibile una migliore stima del numero di moli effettivamente coinvolte nel processo, nonché dei coefficienti che legano una variabile ad un'altra in trasformazioni in cui la terza sia costante. Si veda ad esempio la sezione~\ref{subsec:Boyle}, in cui la discrepanza tra moli teoriche e misurate indirettamente è sì minore nel caso in cui si utilizzi il volume assoluto, ma riflette maggiormente il sistema fisico reale, con perdita di gas a causa della non tenuta ermetica del pistone, e attrito tra questo e il cilindro, quando il volume viene studiato guardando alle variazioni dello stesso.
+È tuttavia considerevole l'adattamento dei dati sperimentali agli andamenti previsti dalla equazione dei gas perfetti, che porta a concludere che l'aria, a pressione atmosferica, possa in effetti essere studiata con buona approssimazione considerandola quale gas ideale. La scelta inoltre di operare sulle variazioni delle variabili termodinamiche, piuttosto che sui loro valori assoluti, ha reso possibile una migliore stima del numero di moli effettivamente coinvolte nel processo, nonché dei coefficienti che legano una variabile ad un'altra in trasformazioni in cui la terza sia costante. Si veda ad esempio la sezione~\ref{subsec:Boyle}, in cui la discrepanza tra moli teoriche e misurate indirettamente è sì minore nel caso in cui si utilizzi il volume assoluto, ma riflette maggiormente il sistema fisico reale, con perdita di gas a causa della non tenuta ermetica del pistone, e attrito tra questo e il cilindro, quando il volume viene studiato guardando alle variazioni dello stesso.
 
 
 
